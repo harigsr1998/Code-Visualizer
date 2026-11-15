@@ -37,6 +37,8 @@ The repo lives at `D:\MBA\Term 5\AABI\Project\Claude CLI\Development`, and that 
 2. Use a directory junction without spaces that points at the repo (e.g. `C:\cv` → `Development`).
 3. Build out-of-tree: copy spike projects into a space-free scratch folder before building.
 
+**Update (2026-11-16):** the user renamed `Claude CLI` → `Claude_CLI`. The path is now `D:\MBA\Term 5\AABI\Project\Claude_CLI\Development`. That's still not space-free (`Term 5`), so this issue stays open. ESP-IDF v5.5 docs confirm it: "the ESP-IDF build system does not support spaces in the paths to either ESP-IDF or to projects" (https://docs.espressif.com/projects/esp-idf/en/v5.5.5/esp32c5/get-started/windows-setup.html). The same page caps the ESP-IDF install path at 90 characters.
+
 **Product implication:** users will have spaces in their paths too (e.g. `C:\Users\John Smith\...`). The app must handle this itself, e.g. by staging builds in a space-free work directory.
 
 Disk space: C: 138 GB free, D: 185 GB free. The toolchains need roughly 4–6 GB in total.
