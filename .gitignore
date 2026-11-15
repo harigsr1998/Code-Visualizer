@@ -1,0 +1,203 @@
+# =============================================================================
+# .gitignore. Stack: Qt 6 / C++ / CMake / MSVC, ESP-IDF, Arduino-ESP32,
+# Espressif QEMU, Python tooling, optional Node tooling. Windows + Linux.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Secrets & credentials. NEVER commit these.
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.template
+*.env
+secrets.*
+!secrets.example.*
+*.secret
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.crt
+*.cer
+id_rsa*
+id_ed25519*
+*.gpg
+credentials.json
+service-account*.json
+.netrc
+# Local AI provider config (API keys for BYOK)
+ai_keys.*
+*.apikey
+
+# -----------------------------------------------------------------------------
+# C / C++ build artifacts
+# -----------------------------------------------------------------------------
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.so.*
+*.dll
+*.dylib
+*.exe
+*.out
+*.app
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.map
+*.d
+*.gch
+*.pch
+*.tlog
+*.lastbuildstate
+*.ipch
+
+# -----------------------------------------------------------------------------
+# CMake
+# -----------------------------------------------------------------------------
+build/
+build-*/
+cmake-build-*/
+out/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+Testing/
+_deps/
+CMakeUserPresets.json
+compile_commands.json
+
+# -----------------------------------------------------------------------------
+# Qt
+# -----------------------------------------------------------------------------
+moc_*.cpp
+moc_*.h
+moc_predefs.h
+qrc_*.cpp
+ui_*.h
+*.qm
+*.qmlc
+*.jsc
+.qmake.stash
+.qmake.cache
+Makefile*
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+.qtc_clangd/
+.qtcreator/
+
+# Deployment output (windeployqt / linuxdeploy)
+deploy/
+dist/
+*.AppImage
+
+# -----------------------------------------------------------------------------
+# ESP-IDF / Espressif QEMU / Arduino / PlatformIO
+# -----------------------------------------------------------------------------
+# ESP-IDF project build output
+sdkconfig
+sdkconfig.old
+!sdkconfig.defaults
+!sdkconfig.defaults.*
+managed_components/
+# QEMU runtime images (generated from the build)
+qemu_flash.bin
+qemu_efuse.bin
+*.elf
+# Arduino / arduino-cli
+.arduino/
+*.ino.bin
+*.ino.elf
+*.ino.map
+*.ino.hex
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# -----------------------------------------------------------------------------
+# Node (tooling only, if ever used)
+# -----------------------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.yarn/
+
+# -----------------------------------------------------------------------------
+# Logs, traces, captures, temp
+# -----------------------------------------------------------------------------
+*.log
+logs/
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+# Recorded simulation sessions / packet captures (keep test fixtures in tests/fixtures/)
+*.pcap
+*.pcapng
+!tests/fixtures/**/*.pcap
+!tests/fixtures/**/*.pcapng
+
+# -----------------------------------------------------------------------------
+# IDEs & editors
+# -----------------------------------------------------------------------------
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.code-workspace
+
+# -----------------------------------------------------------------------------
+# Claude Code (local, per-machine)
+# -----------------------------------------------------------------------------
+.claude/settings.local.json
+CLAUDE.local.md
+
+# -----------------------------------------------------------------------------
+# OS files
+# -----------------------------------------------------------------------------
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+.directory
+.Trash-*
