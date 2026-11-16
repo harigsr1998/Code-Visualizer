@@ -1,0 +1,27 @@
+{
+ "build": "build-a-esp32-os",
+ "sketch_functions_out_of_line": [
+  "setup() (109 B)",
+  "loop() (59 B)",
+  "Counter::next() (16 B)",
+  "fib(unsigned long) (27 B)"
+ ],
+ "sketch_code_bytes": 211,
+ "sketch_line_table_rows": 34,
+ "distinct_sketch_lines_with_code": 22,
+ "addrs_checked": 35,
+ "addrs_inlined": 1,
+ "addrs_innermost_not_sketch": 1,
+ "innermost_not_sketch_files": [
+  [
+   "Esp.h",
+   1
+  ]
+ ],
+ "inlined_functions": [
+  [
+   "EspClass::getCpuFreqMHz()",
+   1
+  ]
+ ]
+}
