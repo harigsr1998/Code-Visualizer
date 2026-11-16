@@ -156,4 +156,22 @@ Setup: `02-boot/probe/probe.ino` tests 19 Arduino API areas. `02-boot/probe-run.
   - for path B builds, an sdkconfig/firmware-side way to skip the startup ADC calibration (to investigate);
   - at minimum, detect this case and say so clearly instead of showing a silent hang (fidelity indicator, D10).
 - The probe now compiles `analogRead` out on S3, so the other S3 tests can run. The S3 ADC row is reported from `adc_min`.
+
+### Community reports (researched 2026-11-16; marked verified/unverified against our own tests)
+- **S3 ADC hang: independently reported, matches ours (verified by `adc_min`).** [Hive-RSI-Lab/hive-fw #48](https://github.com/Hive-RSI-Lab/hive-fw/issues/48) (opened 2026-11-01, IDF v5.5.6, the same QEMU `esp-develop-9.2.2-20260417`).
+  - Same last log line (`W eFuse: calibration efuse version does not match`). They attribute it to esp_adc's `adc_hw_calibration` startup constructor spinning because QEMU has no SAR ADC model.
+  - Their workaround: compile the ADC out of QEMU builds via a Kconfig option. No Espressif response.
+- **"Cache error" panics may really be interrupt-watchdog timeouts (hypothesis, unverified).** [espressif/qemu #206](https://github.com/espressif/qemu/issues/206): QEMU doesn't model `DPORT_{PRO,APP}_INTR_STATUS`, so the panic handler reports an interrupt-watchdog (IWDT) timeout as a *cache error*. The report concerns builds with BT high-level interrupts.
+  - That fits two of our observations:
+    1. Path A (Arduino's prebuilt libs, BT enabled) labels the ADC/RMT crashes "Cache error", while path B labels the same crashes "Interrupt wdt timeout".
+    2. The random panics depend on host timing and disappear with `-icount`.
+  - **Test to run:** path B with a longer IWDT timeout (`CONFIG_ESP_INT_WDT_TIMEOUT_MS`), and separately with the IWDT off. Does the spurious-panic rate drop in default (fast) mode? Only path B can change this; path A's sdkconfig is prebuilt.
+- **S3 clock/PLL not modelled (plausible explanation for S3's fixed 80 MHz, unverified).** [espressif/qemu #193](https://github.com/espressif/qemu/issues/193): the S3 machine has no analog-I2C-master model, so `BBPLL_CAL_DONE` reads 0. esp-hal (Rust) apps hang on it; ESP-IDF doesn't wait on that bit. Fix PR #195 is open, not merged.
+- **Flash operations are slow in QEMU's ESP32 cache model (relevant to step 7).** [espressif/qemu #182](https://github.com/espressif/qemu/issues/182): every cache enable/disable rebuilds QEMU's memory topology and drops translated code. The reporter measured an NVS key write at 969 ms on a Raspberry Pi. An IOMMU-based fix exists as open PR #183, not merged.
+- Other leads, not yet read:
+  - [espressif/qemu #175](https://github.com/espressif/qemu/issues/175): an MTTCG/SIGSEGV issue, referenced from #201.
+  - [espressif/qemu #201](https://github.com/espressif/qemu/issues/201): S3 UART stalls with `-icount` after a dual-core app switch. **Relevant to our `-icount` workaround.**
+- Real-hardware reports exist of crashes after `setCpuFrequencyMhz()` ([arduino-esp32 #6872](https://github.com/espressif/arduino-esp32/issues/6872), [#4710](https://github.com/espressif/arduino-esp32/issues/4710), [#7240](https://github.com/espressif/arduino-esp32/issues/7240)), in specific situations (SPI, Wi-Fi, <80 MHz). None is QEMU-specific, so our 3/3-vs-0/3 result looks emulator-specific, but that's not proven.
+- **A community QEMU fork with peripheral models:** [BMarquinaProyects/taller-qemu](https://github.com/BMarquinaProyects/taller-qemu) adds real GPIO, a GPIO/SPI bridge, and an S3 ADC1 model with injected values (no calibration). Possible reference for our own peripheral models. It's QEMU-zone code (GPLv2): reusing it means our models stay GPLv2 too. Quality and maintenance not yet assessed.
+- **Takeaway:** none of the QEMU issues above has an Espressif maintainer response or a merged fix as of 2026-11-16. Plan on working around these or fixing them ourselves (QEMU zone), not on upstream fixes arriving soon.
 - Remaining: S3 probe results (both paths); check whether the `cpufreq` test destabilizes the next test; per-peripheral summary.
