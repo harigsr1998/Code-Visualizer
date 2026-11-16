@@ -167,9 +167,13 @@ Setup: `02-boot/probe/probe.ino` tests 19 Arduino API areas. `02-boot/probe-run.
 | Path A, 240 MHz (Arduino default) | yes, 160→240 | 1/15 (plus 4/15 in the earlier run = **5/30**) | 6 total | 22–24, jittery |
 | Path A, `CPUFreq=160` | no | **0/15** | 0 | 27 in every run |
 | Path B, 160 MHz (step 1 config) | no | **0/15** | 0 | 26–27 |
+| Path B, **starts at 240 MHz** (`CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240`, build `build-b-esp32-og-cpu240`) | no | **0/15** | 0 | 27 in every run |
 
-- **5/30 vs 0/30** (Fisher exact, one-sided p ≈ 0.03). Boots without a switch are also more consistent and slightly faster.
-- **Caveat:** both no-switch builds run at 160 MHz. A path B build that *starts* at 240 MHz (no switch) is running now, to separate "the switch" from "240 MHz".
+- **5/30 with a switch vs 0/45 without** (one-sided Fisher exact p ≈ 0.008). Boots without a switch are also more consistent and slightly faster.
+- **The trigger is the switch, not 240 MHz.** A build that starts directly at 240 MHz is as clean as the 160 MHz builds. This is now settled.
+- **Load makes it worse, even under `-icount`** (found by the trace worker, `spike/03-trace/NOTES.md` §8 on branch `spike/trace`): with the host at 100 % CPU, `build-a-esp32-og-mapdemo` panicked in 4 of 8 boots under `-icount shift=auto`. That's a **path A build, so it switches the clock at boot**. It fits the switch explanation, and it means `-icount` alone isn't a dependable workaround.
+- **Workaround for the product:** build firmware that **starts at the target clock** (path B: set `CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_*` from the board menu, so `initArduino()` has nothing to switch). Path A can't do this at 240 MHz, because its sdkconfig is prebuilt at 160. A sketch that calls `setCpuFrequencyMhz()` itself will still be exposed, so the fidelity indicator should flag that call.
+- Still open (optional): are these really interrupt-watchdog timeouts mislabelled as cache errors (espressif/qemu #206, below)? Test: path B with a longer `CONFIG_ESP_INT_WDT_TIMEOUT_MS`, or with the IWDT off, plus a runtime `setCpuFrequencyMhz()` call.
 - **S3 ADC hang: independently reported, matches ours (verified by `adc_min`).** [Hive-RSI-Lab/hive-fw #48](https://github.com/Hive-RSI-Lab/hive-fw/issues/48) (opened 2026-11-01, IDF v5.5.6, the same QEMU `esp-develop-9.2.2-20260417`).
   - Same last log line (`W eFuse: calibration efuse version does not match`). They attribute it to esp_adc's `adc_hw_calibration` startup constructor spinning because QEMU has no SAR ADC model.
   - Their workaround: compile the ADC out of QEMU builds via a Kconfig option. No Espressif response.
@@ -186,4 +190,8 @@ Setup: `02-boot/probe/probe.ino` tests 19 Arduino API areas. `02-boot/probe-run.
 - Real-hardware reports exist of crashes after `setCpuFrequencyMhz()` ([arduino-esp32 #6872](https://github.com/espressif/arduino-esp32/issues/6872), [#4710](https://github.com/espressif/arduino-esp32/issues/4710), [#7240](https://github.com/espressif/arduino-esp32/issues/7240)), in specific situations (SPI, Wi-Fi, <80 MHz). None is QEMU-specific, so our 3/3-vs-0/3 result looks emulator-specific, but that's not proven.
 - **A community QEMU fork with peripheral models:** [BMarquinaProyects/taller-qemu](https://github.com/BMarquinaProyects/taller-qemu) adds real GPIO, a GPIO/SPI bridge, and an S3 ADC1 model with injected values (no calibration). Possible reference for our own peripheral models. It's QEMU-zone code (GPLv2): reusing it means our models stay GPLv2 too. Quality and maintenance not yet assessed.
 - **Takeaway:** none of the QEMU issues above has an Espressif maintainer response or a merged fix as of 2026-11-16. Plan on working around these or fixing them ourselves (QEMU zone), not on upstream fixes arriving soon.
-- Remaining: S3 probe results (both paths); check whether the `cpufreq` test destabilizes the next test; per-peripheral summary.
+- Remaining (paused 2026-11-16):
+  - Write up the S3 probe results. The raw results are already in `02-boot/results/build-{a,b}-esp32s3-og-probe.md`.
+  - Write the per-peripheral summary table (ESP32 vs S3, path A vs B, verdict, fidelity-indicator class).
+  - The optional IWDT experiment above.
+  - Note that step 1's path B numbers were taken with the old `sdkconfig.defaults` (160 MHz, `SINGLE_APP_LARGE`). The current defaults are 240 MHz plus Arduino's `partitions.csv`.

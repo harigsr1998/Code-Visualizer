@@ -2,7 +2,14 @@
 
 Everything in this folder is experimental and will **not** become product code. Its purpose is to prove or disprove the riskiest technical assumptions before real development starts.
 
-**Status:** step 1 (Build) done on 2026-11-16: 8/8 builds, 8/8 boot in QEMU (see `NOTES.md`). Step 2 (Boot) is next.
+**Status (2026-11-16, paused):**
+- Step 1 (Build): done. 8/8 builds; 8/8 boot in QEMU.
+- Step 2 (Boot): experiments done; the final write-up is pending. Random panics are traced to the boot-time CPU-clock switch.
+- Step 3 (Trace): done on branch `spike/trace`, awaiting review and merge.
+- Step 5 (Network): mostly done on branch `spike/network`, paused.
+- Steps 4, 6 and 7: not started.
+
+See `NOTES.md`.
 
 ## Questions to answer
 
