@@ -1,0 +1,18 @@
+{
+ "build": "build-a-esp32-og-mapdemo",
+ "extra": "",
+ "bp_round_trips_per_s": 1553.1,
+ "bp_hit_thread": "02",
+ "bp_pc_check": "400d1708",
+ "insn_steps_per_s": 5938,
+ "line_steps": 0,
+ "line_steps_per_s": 0.0,
+ "insns_per_line_step": 200000.0,
+ "line_trail_first30": [],
+ "mem_reads_per_s_halted": 16662,
+ "var_samples_per_s": 96.1,
+ "g_samples_rate_while_sampling_per_s": 0.0,
+ "panics": [
+  "rst:0x7 (TG0WDT_SYS_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)"
+ ]
+}
