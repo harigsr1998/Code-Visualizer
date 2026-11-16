@@ -1,0 +1,49 @@
+0x400857c6 in esp_cpu_wait_for_intr () at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/esp_hw_support/cpu.c:64
+
+=== sensorSample ===
+Breakpoint 1 at 0x400d16b0: file D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/mapdemo.ino, line 18.
+[Switching to Thread 1.2]
+
+Thread 2 hit Breakpoint 1, sensorSample (n=0) at D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/mapdemo.ino:18
+18	static uint32_t sensorSample(uint32_t n) {
+n = 0
+v = <optimized out>
+#0  sensorSample (n=0) at D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/mapdemo.ino:18
+#1  0x400d1718 in loop () at D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/mapdemo.ino:35
+#2  0x400d48a3 in loopTask (pvParameters=0x0) at C:\Users\harig\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.3.12\cores\esp32\main.cpp:82
+#3  0x400880f0 in vPortTaskWrapper (pxCode=0x400d4858 <loopTask(void*)>, pvParameters=0x0) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:143
+
+=== Blinker::step ===
+Breakpoint 2 at 0x400ef583: file D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/blinker.cpp, line 9.
+
+Thread 2 hit Breakpoint 2, Blinker::step (this=0x3ffc1d44 <blinker>, level=183) at D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/blinker.cpp:9
+9	  ++dwell_;
+this = 0x3ffc1d44 <blinker>
+level = 183
+No locals.
+#0  Blinker::step (this=0x3ffc1d44 <blinker>, level=183) at D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/blinker.cpp:9
+#1  0x400d1743 in loop () at D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/mapdemo.ino:38
+#2  0x400d48a3 in loopTask (pvParameters=0x0) at C:\Users\harig\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.3.12\cores\esp32\main.cpp:82
+#3  0x400880f0 in vPortTaskWrapper (pxCode=0x400d4858 <loopTask(void*)>, pvParameters=0x0) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:143
+
+=== MovingAverage<8u>::add ===
+Breakpoint 3 at 0x400ef5f0: file D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/filter.h, line 8.
+
+Thread 2 hit Breakpoint 3, MovingAverage<8u>::add (this=0x0, v=3) at D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/filter.h:8
+8	  void add(uint32_t v) {
+this = 0x0
+v = 3
+No locals.
+#0  MovingAverage<8u>::add (this=0x0, v=3) at D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/filter.h:8
+#1  0x400d1731 in loop () at D:\Coding\Code_Visualizer\Claude_CLI\worktrees\trace\spike\03-trace\mapdemo/mapdemo.ino:37
+#2  0x400d48a3 in loopTask (pvParameters=0x0) at C:\Users\harig\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.3.12\cores\esp32\main.cpp:82
+#3  0x400880f0 in vPortTaskWrapper (pxCode=0x400d4858 <loopTask(void*)>, pvParameters=0x0) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:143
+
+=== globals ===
+$1 = 304
+$2 = {buf_ = {307, 220, 73, 307, 164, 17, 254, 128}, sum_ = 1470, pos_ = 7, count_ = 8}
+$3 = {state_ = Blinker::High, dwell_ = 297}
+[Inferior 1 (process 1) detached]
+warning: 64	/home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/esp_hw_support/cpu.c: No such file or directory
+
+# build-a-esp32-og-mapdemo: '<optimized out>' values: 1

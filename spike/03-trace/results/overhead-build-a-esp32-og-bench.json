@@ -1,0 +1,478 @@
+[
+ {
+  "mode": "base",
+  "cli": "",
+  "panics": [],
+  "chunks_per_s": 42.32,
+  "core1_Miter_per_s": 169.28,
+  "core0_Miter_per_s": 102.62,
+  "guest_ms_per_chunk_median": 22,
+  "window_s": 10.07,
+  "log_on_s": 11.1,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "icount_auto",
+  "cli": "-icount shift=auto",
+  "panics": [],
+  "chunks_per_s": 6.188,
+  "core1_Miter_per_s": 24.75,
+  "core0_Miter_per_s": 66.95,
+  "guest_ms_per_chunk_median": 164,
+  "window_s": 9.86,
+  "log_on_s": 11.07,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "gdb_attached_idle",
+  "cli": "-gdb tcp:127.0.0.1:5561",
+  "panics": [],
+  "chunks_per_s": 38.284,
+  "core1_Miter_per_s": 153.14,
+  "core0_Miter_per_s": 104.36,
+  "guest_ms_per_chunk_median": 24,
+  "window_s": 10.0,
+  "log_on_s": 11.03,
+  "rep": 0,
+  "attempt": 1
+ },
+ {
+  "mode": "gdb_sample_100hz",
+  "cli": "-gdb tcp:127.0.0.1:5561",
+  "panics": [],
+  "chunks_per_s": 35.105,
+  "core1_Miter_per_s": 140.42,
+  "core0_Miter_per_s": 105.52,
+  "guest_ms_per_chunk_median": 25,
+  "window_s": 9.97,
+  "samples_per_s": 106.4,
+  "sample_share_in_workChunk": {
+   "0": 0.536,
+   "1": 0.893
+  },
+  "sample_top": {
+   "0": [
+    [
+     "workChunk(unsigned long)",
+     0.536
+    ],
+    [
+     "esp_cpu_wait_for_intr",
+     0.409
+    ],
+    [
+     "_UserExceptionVector",
+     0.018
+    ]
+   ],
+   "1": [
+    [
+     "workChunk(unsigned long)",
+     0.893
+    ],
+    [
+     "uart_hal_write_txfifo",
+     0.038
+    ],
+    [
+     "_UserExceptionVector",
+     0.029
+    ]
+   ]
+  },
+  "log_on_s": 11.02,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "gdb_sample_max",
+  "cli": "-gdb tcp:127.0.0.1:5561",
+  "panics": [],
+  "chunks_per_s": 0.152,
+  "core1_Miter_per_s": 0.61,
+  "core0_Miter_per_s": 0.38,
+  "guest_ms_per_chunk_median": 216,
+  "window_s": 13.15,
+  "samples_per_s": 1616.1,
+  "sample_share_in_workChunk": {
+   "0": 0.053,
+   "1": 0.044
+  },
+  "sample_top": {
+   "0": [
+    [
+     "xPortEnterCriticalTimeout",
+     0.165
+    ],
+    [
+     "esp_cpu_compare_and_set",
+     0.135
+    ],
+    [
+     "wdt_hal_config_stage",
+     0.133
+    ]
+   ],
+   "1": [
+    [
+     "xPortEnterCriticalTimeout",
+     0.286
+    ],
+    [
+     "esp_timer_impl_get_counter_reg",
+     0.141
+    ],
+    [
+     "vPortExitCritical",
+     0.109
+    ]
+   ]
+  },
+  "log_on_s": 25.03,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "hmp_sample_100hz",
+  "cli": "",
+  "panics": [],
+  "chunks_per_s": 35.814,
+  "core1_Miter_per_s": 143.26,
+  "core0_Miter_per_s": 121.47,
+  "guest_ms_per_chunk_median": 27,
+  "window_s": 10.05,
+  "samples_per_s": 106.7,
+  "sample_share_in_workChunk": {
+   "0": 0.337,
+   "1": 0.515
+  },
+  "sample_top": {
+   "0": [
+    [
+     "workChunk(unsigned long)",
+     0.337
+    ],
+    [
+     "_xt_context_save",
+     0.159
+    ],
+    [
+     "esp_cpu_wait_for_intr",
+     0.091
+    ]
+   ],
+   "1": [
+    [
+     "workChunk(unsigned long)",
+     0.515
+    ],
+    [
+     "_xt_context_save",
+     0.127
+    ],
+    [
+     "xPortEnterCriticalTimeout",
+     0.09
+    ]
+   ]
+  },
+  "log_on_s": 11.08,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "hmp_sample_max",
+  "cli": "",
+  "error": "no chunk 3 within 120 s",
+  "panics": [
+   "Guru Meditation Error: Core  / panic'ed (Cache error). ",
+   "Cache disabled but cached memory region accessed"
+  ],
+  "rep": 0,
+  "attempt": 1
+ },
+ {
+  "mode": "log_nochain_only",
+  "cli": "",
+  "panics": [],
+  "chunks_per_s": 5.397,
+  "core1_Miter_per_s": 21.59,
+  "core0_Miter_per_s": 20.47,
+  "guest_ms_per_chunk_median": 186,
+  "window_s": 9.82,
+  "log_MB": 0.0,
+  "log_MB_per_s": 0.0,
+  "log_on_s": 11.06,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "log_in_asm",
+  "cli": "",
+  "panics": [],
+  "chunks_per_s": 34.087,
+  "core1_Miter_per_s": 136.35,
+  "core0_Miter_per_s": 87.42,
+  "guest_ms_per_chunk_median": 27,
+  "window_s": 9.97,
+  "log_MB": 0.0,
+  "log_MB_per_s": 0.0,
+  "log_on_s": 11.03,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "log_exec_chained",
+  "cli": "",
+  "panics": [],
+  "chunks_per_s": 10.742,
+  "core1_Miter_per_s": 42.97,
+  "core0_Miter_per_s": 19.86,
+  "guest_ms_per_chunk_median": 70,
+  "window_s": 9.87,
+  "log_MB": 90.4,
+  "log_MB_per_s": 8.2,
+  "tb_total": {
+   "1": 485747,
+   "0": 684720
+  },
+  "marker": {
+   "1": 124,
+   "0": 60
+  },
+  "tb_logged_per_s": 105705,
+  "marker_Miter_per_s": {
+   "1": 0.0,
+   "0": 0.0
+  },
+  "log_on_s": 11.07,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "trace_exec_tb_chained",
+  "cli": "",
+  "panics": [],
+  "chunks_per_s": 15.795,
+  "core1_Miter_per_s": 63.18,
+  "core0_Miter_per_s": 39.14,
+  "guest_ms_per_chunk_median": 50,
+  "window_s": 10.07,
+  "log_MB": 57.2,
+  "log_MB_per_s": 5.2,
+  "tb_total": {
+   "-1": 1330958
+  },
+  "marker": {
+   "-1": 260
+  },
+  "tb_logged_per_s": 119810,
+  "marker_Miter_per_s": {
+   "-1": 0.0
+  },
+  "log_on_s": 11.11,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "log_exec_nochain",
+  "cli": "",
+  "panics": [
+   "rst:0x7 (TG0WDT_SYS_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)",
+   "rst:0x7 (TG0WDT_SYS_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)"
+  ],
+  "error": "only 0 chunk lines in the window",
+  "log_MB": 179.5,
+  "log_MB_per_s": 11.3,
+  "tb_total": {
+   "0": 1181731,
+   "1": 1179649
+  },
+  "marker": {
+   "1": 1743
+  },
+  "tb_logged_per_s": 148412,
+  "marker_Miter_per_s": {
+   "1": 0.0001
+  },
+  "log_on_s": 15.91,
+  "rep": 0,
+  "attempt": 1
+ },
+ {
+  "mode": "log_exec_nochain_dfilter_sketch",
+  "cli": "-dfilter 0x400d16ac..0x400d16ce,0x400d16d0..0x400d16f3,0x400d16fa..0x400d1720,0x400d1724..0x400d175c,0x400d1760..0x400d1798",
+  "panics": [
+   "Rebooting...",
+   "rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)"
+  ],
+  "error": "only 0 chunk lines in the window",
+  "log_MB": 59.5,
+  "log_MB_per_s": 7.5,
+  "tb_total": {
+   "0": 403065,
+   "1": 400063
+  },
+  "marker": {
+   "0": 161250,
+   "1": 159943
+  },
+  "tb_logged_per_s": 100708,
+  "marker_Miter_per_s": {
+   "0": 0.0202,
+   "1": 0.0201
+  },
+  "log_on_s": 7.97,
+  "rep": 0,
+  "attempt": 1
+ },
+ {
+  "mode": "icount_gdb_sample_100hz",
+  "cli": "-icount shift=auto -gdb tcp:127.0.0.1:5561",
+  "panics": [],
+  "chunks_per_s": 4.749,
+  "core1_Miter_per_s": 19.0,
+  "core0_Miter_per_s": 52.34,
+  "guest_ms_per_chunk_median": 166,
+  "window_s": 9.9,
+  "samples_per_s": 106.1,
+  "sample_share_in_workChunk": {
+   "0": 0.89,
+   "1": 0.739
+  },
+  "sample_top": {
+   "0": [
+    [
+     "workChunk(unsigned long)",
+     0.89
+    ],
+    [
+     "esp_cpu_wait_for_intr",
+     0.03
+    ],
+    [
+     "xPortInIsrContext",
+     0.019
+    ]
+   ],
+   "1": [
+    [
+     "workChunk(unsigned long)",
+     0.739
+    ],
+    [
+     "_frxt_timer_int",
+     0.193
+    ],
+    [
+     "_UserExceptionVector",
+     0.05
+    ]
+   ]
+  },
+  "log_on_s": 11.08,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "icount_hmp_sample_100hz",
+  "cli": "-icount shift=auto",
+  "panics": [],
+  "chunks_per_s": 4.276,
+  "core1_Miter_per_s": 17.1,
+  "core0_Miter_per_s": 47.14,
+  "guest_ms_per_chunk_median": 205,
+  "window_s": 9.82,
+  "samples_per_s": 106.0,
+  "sample_share_in_workChunk": {
+   "0": 0.864,
+   "1": 0.604
+  },
+  "sample_top": {
+   "0": [
+    [
+     "workChunk(unsigned long)",
+     0.864
+    ],
+    [
+     "_xt_context_save",
+     0.042
+    ],
+    [
+     "esp_cpu_wait_for_intr",
+     0.022
+    ]
+   ],
+   "1": [
+    [
+     "workChunk(unsigned long)",
+     0.604
+    ],
+    [
+     "_frxt_timer_int",
+     0.134
+    ],
+    [
+     "_xt_context_save",
+     0.095
+    ]
+   ]
+  },
+  "log_on_s": 11.06,
+  "rep": 0,
+  "attempt": 0
+ },
+ {
+  "mode": "icount_log_exec_nochain",
+  "cli": "-icount shift=auto",
+  "panics": [],
+  "error": "only 0 chunk lines in the window",
+  "log_MB": 539.0,
+  "log_MB_per_s": 20.7,
+  "tb_total": {
+   "0": 4963184,
+   "1": 2165612
+  },
+  "marker": {
+   "1": 344882,
+   "0": 465206
+  },
+  "tb_logged_per_s": 273808,
+  "marker_Miter_per_s": {
+   "1": 0.0132,
+   "0": 0.0179
+  },
+  "log_on_s": 26.04,
+  "rep": 0,
+  "attempt": 1
+ },
+ {
+  "mode": "icount_log_exec_nochain_dfilter_sketch",
+  "cli": "-icount shift=auto -dfilter 0x400d16ac..0x400d16ce,0x400d16d0..0x400d16f3,0x400d16fa..0x400d1720,0x400d1724..0x400d175c,0x400d1760..0x400d1798",
+  "panics": [
+   "Rebooting...",
+   "rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)"
+  ],
+  "error": "only 0 chunk lines in the window",
+  "log_MB": 132.4,
+  "log_MB_per_s": 13.7,
+  "tb_total": {
+   "0": 1106456,
+   "1": 681182
+  },
+  "marker": {
+   "0": 442566,
+   "1": 272312
+  },
+  "tb_logged_per_s": 185102,
+  "marker_Miter_per_s": {
+   "0": 0.0458,
+   "1": 0.0282
+  },
+  "log_on_s": 9.66,
+  "rep": 0,
+  "attempt": 1
+ }
+]

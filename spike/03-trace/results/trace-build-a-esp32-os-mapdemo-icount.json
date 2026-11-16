@@ -1,0 +1,189 @@
+{
+ "tb_executions": 993880,
+ "tb_without_in_asm": 0,
+ "translated_tbs": 11715,
+ "insn_executions": 2052424,
+ "share_by_category": {
+  "idf": 0.95622,
+  "rom": 0.04367,
+  "sketch": 7e-05,
+  "other": 1e-05,
+  "arduino": 1e-05,
+  "toolchain": 1e-05
+ },
+ "share_by_cpu": {
+  "0": {
+   "idf": 0.95967,
+   "rom": 0.04033
+  },
+  "1": {
+   "idf": 0.94182,
+   "rom": 0.05766,
+   "sketch": 0.00037,
+   "other": 7e-05,
+   "arduino": 4e-05,
+   "toolchain": 4e-05
+  }
+ },
+ "insn_executions_by_cpu": {
+  "0": 1656662,
+  "1": 395762
+ },
+ "unique_executed_addrs_by_category": {
+  "idf": 1328,
+  "sketch": 57,
+  "rom": 51,
+  "other": 12,
+  "arduino": 8,
+  "toolchain": 8
+ },
+ "sketch_line_hits": {
+  "cpu1": [
+   [
+    "mapdemo.ino:36",
+    18
+   ],
+   [
+    "filter.h:9",
+    18
+   ],
+   [
+    "mapdemo.ino:15",
+    15
+   ],
+   [
+    "mapdemo.ino:35",
+    12
+   ],
+   [
+    "mapdemo.ino:39",
+    12
+   ],
+   [
+    "mapdemo.ino:19",
+    9
+   ],
+   [
+    "filter.h:12",
+    9
+   ],
+   [
+    "mapdemo.ino:38",
+    8
+   ],
+   [
+    "mapdemo.ino:45",
+    6
+   ],
+   [
+    "filter.h:11",
+    6
+   ],
+   [
+    "filter.h:13",
+    6
+   ],
+   [
+    "blinker.cpp:9",
+    6
+   ],
+   [
+    "blinker.cpp:10",
+    4
+   ],
+   [
+    "blinker.cpp:24",
+    4
+   ],
+   [
+    "blinker.cpp:36",
+    4
+   ]
+  ]
+ },
+ "sketch_functions_by_cpu": {
+  "1": [
+   [
+    "loop()",
+    128
+   ],
+   [
+    "Blinker::step(unsigned long)",
+    20
+   ]
+  ]
+ },
+ "top_functions": [
+  [
+   "cpu0 esp_cpu_compare_and_set",
+   0.3333
+  ],
+  [
+   "cpu0 xPortEnterCriticalTimeout",
+   0.1465
+  ],
+  [
+   "cpu0 wdt_hal_config_stage",
+   0.0835
+  ],
+  [
+   "cpu1 xPortEnterCriticalTimeout",
+   0.0419
+  ],
+  [
+   "cpu1 xTaskIncrementTickOtherCores",
+   0.0328
+  ],
+  [
+   "cpu0 _xtos_set_intlevel",
+   0.0326
+  ],
+  [
+   "cpu1 esp_vApplicationTickHook",
+   0.0322
+  ],
+  [
+   "cpu0 esp_vApplicationTickHook",
+   0.0318
+  ],
+  [
+   "cpu0 xTaskIncrementTick",
+   0.0312
+  ],
+  [
+   "cpu0 tick_hook",
+   0.0281
+  ],
+  [
+   "cpu1 vPortExitCritical",
+   0.0249
+  ],
+  [
+   "cpu0 vPortExitCritical",
+   0.0246
+  ],
+  [
+   "cpu0 xPortInIsrContext",
+   0.024
+  ],
+  [
+   "cpu0 wdt_hal_write_protect_disable",
+   0.0143
+  ],
+  [
+   "cpu0 wdt_hal_write_protect_enable",
+   0.0143
+  ]
+ ],
+ "tag": "build-a-esp32-os-mapdemo-icount",
+ "trace_on_s": 10.0,
+ "log_MB": 82.1,
+ "analyse_s": 1.67,
+ "uart_lines_during_trace": 0,
+ "uart_sample": [],
+ "panics": [
+  "Guru Meditation Error: Core  / panic'ed (Cache error). ",
+  "Cache disabled but cached memory region accessed",
+  "Rebooting..."
+ ]
+}

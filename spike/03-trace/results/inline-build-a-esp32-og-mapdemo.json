@@ -1,0 +1,32 @@
+{
+ "build": "build-a-esp32-og-mapdemo",
+ "sketch_functions_out_of_line": [
+  "sensorSample(unsigned long) (30 B)",
+  "setup() (56 B)",
+  "loop() (133 B)",
+  "Blinker::begin() (20 B)",
+  "Blinker::step(unsigned long) (110 B)",
+  "MovingAverage<8u>::add(unsigned long) (45 B)"
+ ],
+ "sketch_code_bytes": 394,
+ "sketch_line_table_rows": 77,
+ "distinct_sketch_lines_with_code": 51,
+ "addrs_checked": 77,
+ "addrs_inlined": 10,
+ "addrs_innermost_not_sketch": 0,
+ "innermost_not_sketch_files": [],
+ "inlined_functions": [
+  [
+   "MovingAverage<8u>::value() const",
+   8
+  ],
+  [
+   "sensorSample(unsigned long)",
+   1
+  ],
+  [
+   "scale",
+   1
+  ]
+ ]
+}

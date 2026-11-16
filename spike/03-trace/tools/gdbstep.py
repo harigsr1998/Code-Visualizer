@@ -39,8 +39,9 @@ def sym_addr(elf: Path, name: str) -> int:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--build", default="build-a-esp32-og-mapdemo")
-    ap.add_argument("--extra", nargs="*", default=[])
-    a = ap.parse_args()
+    ap.add_argument("--extra", nargs="*", default=[], help="extra QEMU args (dash-led ones are collected too)")
+    a, unknown = ap.parse_known_args()
+    a.extra = list(a.extra) + unknown
     build = (STEP / a.build).resolve()
     elf = next(build.glob("*.ino.elf"))
     lm = LineMap(elf, "esp32", str((STEP / "mapdemo").resolve()))
