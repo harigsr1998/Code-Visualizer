@@ -97,6 +97,19 @@ Build outputs (`build-*/`) are git-ignored.
 - That's because `ETH.h`'s argument-less `begin()` only works when the board variant defines `ETH_PHY_TYPE/ADDR/MDC/MDIO/POWER/CLK_MODE`, and path B's generic board doesn't. So it never touched the EMAC.
 - Changed it to the explicit LAN8720 call (`ETH.begin(ETH_PHY_LAN8720, 1, 23, 18, -1, ETH_CLOCK_GPIO0_IN)`) and rebuilding.
 
+### Stock `ETH.begin()` with LAN8720 pins: deterministic crash [own test]
+- Incremental path B rebuild: 31.8 s. **2 of 2 runs:** `Guru Meditation Error: Core 1 panic'ed (LoadStorePIFAddrError)`, `EXCVADDR: 0x3ff6980c`, then a reboot loop (3 panics per 25 s run).
+- addr2line:
+  ```
+  emac_ll_clock_enable_rmii_input   hal/esp32/include/hal/emac_ll.h:671
+   (inlined) emac_esp_config_data_interface  esp_eth/src/mac/esp_eth_mac_esp.c:767
+   (inlined) esp_eth_mac_new_esp32           esp_eth_mac_esp.c:848
+  ETHClass::begin(...)                       Ethernet/src/ETH.cpp:316
+  setup()                                    05-network/es/es.ino:14
+  ```
+- QEMU's ESP32 machine doesn't map the internal EMAC's registers (0x3ff69000 region), so the first register access faults.
+- **Product implication:** an unmodified wired-Ethernet sketch (internal EMAC; SPI W5500 etc. are similar, since no SPI Ethernet chip is modelled either) can't run as-is. Like Wi-Fi (step 6), `ETH.begin(...)` needs a **firmware-zone substitute** that maps onto open_eth, e.g. `qemu_eth.cpp`, linked in place of the EMAC/SPI MAC constructors. The fidelity indicator must show "Ethernet: substituted (QEMU open_eth)".
+
 ### Question 1, ESP32-S3 [own test]
 - `idf_http_request` for S3: 123 s build. **2 of 2 boots** (`-icount shift=auto`, 40 s each): link up, DHCP 10.0.2.15, DNS, `HTTP/1.1 200 OK`, repeated. S3 works the same as ESP32.
 
