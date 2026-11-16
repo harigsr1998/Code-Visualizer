@@ -1,13 +1,13 @@
 {
  "build": "build-a-esp32-og-mapdemo",
- "extra": "-icount shift=auto",
- "bp_round_trips_per_s": 1457.2,
+ "extra": "-global driver=timer.esp32.timg,property=wdt_disable,value=true",
+ "bp_round_trips_per_s": 1227.7,
  "bp_hit_thread": "02",
  "bp_pc_check": "400d1708",
- "insn_steps_per_s": 4992,
+ "insn_steps_per_s": 6020,
  "line_steps": 60,
- "line_steps_per_s": 123.0,
- "insns_per_line_step": 26.6,
+ "line_steps_per_s": 168.7,
+ "insns_per_line_step": 26.5,
  "line_trail_first30": [
   "mapdemo.ino:45",
   "mapdemo.ino:33",
@@ -32,16 +32,16 @@
   "blinker.cpp:8",
   "blinker.cpp:9",
   "blinker.cpp:10",
-  "blinker.cpp:18",
-  "blinker.cpp:19",
-  "blinker.cpp:20",
+  "blinker.cpp:24",
   "blinker.cpp:36",
   "mapdemo.ino:39",
   "mapdemo.ino:44",
-  "mapdemo.ino:45"
+  "mapdemo.ino:45",
+  "mapdemo.ino:33",
+  "mapdemo.ino:35"
  ],
- "mem_reads_per_s_halted": 14969,
+ "mem_reads_per_s_halted": 16969,
  "var_samples_per_s": 97.1,
- "g_samples_rate_while_sampling_per_s": 52.0,
+ "g_samples_rate_while_sampling_per_s": 87.3,
  "panics": []
 }

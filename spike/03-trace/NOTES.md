@@ -227,11 +227,11 @@ mapdemo `-Og`, our own RSP client, breakpoint on `loop()`, stepping on the core 
 |---|---|---|
 | breakpoint hit → continue round trips | 1,457 /s | 1,553 /s |
 | instruction single-steps | 4,992 /s (0.2 ms each) | 5,938 /s (0.17 ms each) |
-| source-line steps (step until the DWARF line changes; steps *into* callees) | 123 /s, 26.6 instructions per line | **chip reset by the TG0 watchdog during the session** (see below) |
+| source-line steps (step until the DWARF line changes; steps *into* callees) | 123 /s, 26.6 instructions per line | 151 /s (repeat run; the first run was reset by the watchdog, see below) |
 | memory reads while halted (`m`, 4 bytes) | 14,969 /s | 16,662 /s |
 | live variable sampling (halt → read → continue) | 97 /s | 96 /s (reading a rebooting chip) |
 
-- **Real-time mode + stepping trips the watchdog.** The first default-mode attempt hit the spurious boot panic. The second ran breakpoints and 2,000 instruction steps fine, then the chip was reset (`rst:0x7 (TG0WDT_SYS_RESET)`) before the line-step phase. *Hypothesis (control run pending, §16):* in real-time mode the guest clock follows host time across every step, so each ~0.17 ms gdb round trip ages the emulated watchdog while only one instruction runs. Under `-icount` time advances only with executed instructions, and that run passed.
+- **Real-time stepping: one watchdog reset in 2 runs, cause not established.** The first default-mode run reset the chip (`rst:0x7 (TG0WDT_SYS_RESET)`) after breakpoints and 2,000 single-steps. The repeat (15:05, inside the lock) ran everything cleanly: 1,033 breakpoint round trips/s, 6,082 single-steps/s, **151 line steps/s** (26.6 instructions each), 15,212 reads/s, live sampling 97/s. The control with `-global driver=timer.esp32.timg,property=wdt_disable,value=true` was also clean (1,228 / 6,020 / 169 line steps/s). My hypothesis (each gdb round trip ages the watchdog in real time) is **not confirmed**. Treat it as an intermittent risk: for long stepping sessions, prefer `-icount` or disable the emulated watchdog (and show that in the fidelity indicator).
 - The line trail is the expected path: `loop` 33 → 35 → `sensorSample` 18–20 → `scale` 15 → 24 → 36–37 → `MovingAverage::add` (`filter.h` 8–16) → `value` 18 → 38 → `Blinker::step` → 39 → 44–45.
 - Single-stepping runs with interrupts and timers masked (QEMU's default `NOIRQ|NOTIMER`, §5), so a step never wanders into an ISR.
 - One step is 0.2 ms, so an interactive "step" button is instant. Even a "next line" that steps over a call by single-stepping through it (~25 instructions per line here) takes ~5 ms. Stepping over a long call should set a temporary breakpoint at the return address instead (`Z0`, ~0.7 ms round trip).
