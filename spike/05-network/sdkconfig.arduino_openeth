@@ -1,3 +1,12 @@
 # Spike step 5, path B: enable the OpenCores Ethernet MAC driver that QEMU models.
 # Passed to ../01-build/build.ps1 -ExtraDefaults (applied after the shared path B defaults).
 CONFIG_ETH_USE_OPENETH=y
+
+# Arduino's NetworkClientSecure (pulled in by HTTPClient, even for plain http://) only
+# compiles its TLS layer (ssl_client.cpp) when PSK ciphersuites are enabled. Arduino's
+# precompiled core (esp32-libs/3.3.12/sdkconfig) has these on; ESP-IDF's defaults don't,
+# so without them the link fails with "undefined reference to ssl_init(...)".
+CONFIG_MBEDTLS_PSK_MODES=y
+CONFIG_MBEDTLS_KEY_EXCHANGE_PSK=y
+CONFIG_MBEDTLS_KEY_EXCHANGE_ECDHE_PSK=y
+CONFIG_MBEDTLS_KEY_EXCHANGE_RSA_PSK=y

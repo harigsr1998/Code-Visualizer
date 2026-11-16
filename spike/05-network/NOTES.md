@@ -84,6 +84,19 @@ Build outputs (`build-*/`) are git-ignored.
 - **Product implication:** user projects can live in deep folders, and the user name is part of the path. The app must build in its own **short staging directory** (e.g. `C:\cvb\<hash>` or under a short `%LOCALAPPDATA%` root) and not depend on `LongPathsEnabled`, which needs admin and reportedly doesn't fix ccache anyway. This adds to the spaces-in-path finding from step 0.
 - **Request to the coordinator:** add an `-OutDir` option to `01-build/build.ps1`, so the build folder doesn't have to sit next to the sketch.
 
+### Path B link failure: Arduino's TLS layer needs mbedTLS PSK modes [own test + official source + community]
+- With short names, `es` built (289 s), but `an` (both chips, 277/325 s) failed to link: `NetworkClientSecure.cpp.obj: undefined reference to ssl_init(sslclient_context*)`, `start_ssl_client(...)`, `send_ssl_data(...)` …
+- Cause, from the source: `libraries/NetworkClientSecure/src/ssl_client.cpp` line 27 compiles to **nothing** (it only emits a `#warning`) unless `MBEDTLS_KEY_EXCHANGE_SOME_PSK_ENABLED` is set. Arduino's precompiled config has `CONFIG_MBEDTLS_PSK_MODES=y` + `KEY_EXCHANGE_PSK/ECDHE_PSK/RSA_PSK=y`; ESP-IDF's defaults have `# CONFIG_MBEDTLS_PSK_MODES is not set`.
+  - `HTTPClient` references `NetworkClientSecure` even for plain `http://`, so **any sketch that includes HTTPClient fails to link on path B** unless these are set. Step 1's sketch never used it, which is why this didn't show up earlier.
+- [community] The same undefined references are reported in https://github.com/espressif/arduino-esp32/issues/11170 .
+- Fix: the 4 PSK lines in `sdkconfig.arduino_openeth`. **They belong in the shared path B defaults** (`01-build/idf_arduino/sdkconfig.defaults`), which is a request to the coordinator.
+- **Product implication (strengthens step 1 finding 3):** path B needs Arduino's full sdkconfig as its baseline (diff `esp32-libs/<ver>/sdkconfig` against IDF defaults), not a hand-picked list. Otherwise ordinary sketches break in ways the Arduino IDE never shows.
+
+### Stock `ETH.begin()` control, first attempt [own test]
+- `ETH.begin()` with no arguments returned **false after 0 ms** (2/2 runs); `linkUp=0 hasIP=0` forever, no crash.
+- That's because `ETH.h`'s argument-less `begin()` only works when the board variant defines `ETH_PHY_TYPE/ADDR/MDC/MDIO/POWER/CLK_MODE`, and path B's generic board doesn't. So it never touched the EMAC.
+- Changed it to the explicit LAN8720 call (`ETH.begin(ETH_PHY_LAN8720, 1, 23, 18, -1, ETH_CLOCK_GPIO0_IN)`) and rebuilding.
+
 ### Question 1, ESP32-S3 [own test]
 - `idf_http_request` for S3: 123 s build. **2 of 2 boots** (`-icount shift=auto`, 40 s each): link up, DHCP 10.0.2.15, DNS, `HTTP/1.1 200 OK`, repeated. S3 works the same as ESP32.
 
