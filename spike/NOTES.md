@@ -157,7 +157,19 @@ Setup: `02-boot/probe/probe.ino` tests 19 Arduino API areas. `02-boot/probe-run.
   - at minimum, detect this case and say so clearly instead of showing a silent hang (fidelity indicator, D10).
 - The probe now compiles `analogRead` out on S3, so the other S3 tests can run. The S3 ADC row is reported from `adc_min`.
 
-### Community reports (researched 2026-11-16; marked verified/unverified against our own tests)
+### The random panics follow the boot-time CPU-clock switch
+- **cpufreq → timing experiment** (path A ESP32 probe, `-icount shift=auto`, where spurious panics otherwise don't occur): `timing` crashed **3/3** right after `cpufreq` had switched 80→160→240 MHz, and **0/3** without the `cpufreq` test first. Results: `02-boot/results/experiments/`.
+- **Arduino path A switches the clock at every boot.** The prebuilt ESP32 sdkconfig says 160 MHz, the board menu says 240, and `initArduino()` calls `setCpuFrequencyMhz(240)`. Path B and the S3 start at their final frequency and don't switch.
+- **Boot reliability**, step 1 sketch, ESP32 `-Og`, default (fast) QEMU mode, 15 boots × 15 s each, under the heavy-job lock:
+
+| Build | Switches clock at boot? | Boots that never ran | Panics | Ticks/15 s |
+|---|---|---|---|---|
+| Path A, 240 MHz (Arduino default) | yes, 160→240 | 1/15 (plus 4/15 in the earlier run = **5/30**) | 6 total | 22–24, jittery |
+| Path A, `CPUFreq=160` | no | **0/15** | 0 | 27 in every run |
+| Path B, 160 MHz (step 1 config) | no | **0/15** | 0 | 26–27 |
+
+- **5/30 vs 0/30** (Fisher exact, one-sided p ≈ 0.03). Boots without a switch are also more consistent and slightly faster.
+- **Caveat:** both no-switch builds run at 160 MHz. A path B build that *starts* at 240 MHz (no switch) is running now, to separate "the switch" from "240 MHz".
 - **S3 ADC hang: independently reported, matches ours (verified by `adc_min`).** [Hive-RSI-Lab/hive-fw #48](https://github.com/Hive-RSI-Lab/hive-fw/issues/48) (opened 2026-11-01, IDF v5.5.6, the same QEMU `esp-develop-9.2.2-20260417`).
   - Same last log line (`W eFuse: calibration efuse version does not match`). They attribute it to esp_adc's `adc_hw_calibration` startup constructor spinning because QEMU has no SAR ADC model.
   - Their workaround: compile the ADC out of QEMU builds via a Kconfig option. No Espressif response.
