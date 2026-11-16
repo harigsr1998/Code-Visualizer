@@ -1,0 +1,67 @@
+[
+ {
+  "mode": "none",
+  "icount": false,
+  "panics": [],
+  "loop_per_s": 52.8,
+  "qemu_cpu_s_per_s": 0.06,
+  "log_MB_per_s": 0.0,
+  "window_s": 15.2,
+  "attempt": 0
+ },
+ {
+  "mode": "dfilter",
+  "icount": false,
+  "panics": [],
+  "loop_per_s": 56.1,
+  "qemu_cpu_s_per_s": 0.13,
+  "log_MB_per_s": 0.09,
+  "blocks_logged_per_s_avg": 1221,
+  "window_s": 15.2,
+  "attempt": 0
+ },
+ {
+  "mode": "full",
+  "icount": false,
+  "panics": [
+   "rst:0x7 (TG0WDT_SYS_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)"
+  ],
+  "qemu_cpu_s_per_s": 1.91,
+  "log_MB_per_s": 11.68,
+  "blocks_logged_per_s_avg": 151532,
+  "window_s": 14.4,
+  "attempt": 1
+ },
+ {
+  "mode": "none",
+  "icount": true,
+  "panics": [],
+  "loop_per_s": 10.8,
+  "qemu_cpu_s_per_s": 0.03,
+  "log_MB_per_s": 0.0,
+  "window_s": 15.3,
+  "attempt": 0
+ },
+ {
+  "mode": "dfilter",
+  "icount": true,
+  "panics": [],
+  "loop_per_s": 14.2,
+  "qemu_cpu_s_per_s": 0.04,
+  "log_MB_per_s": 0.03,
+  "blocks_logged_per_s_avg": 383,
+  "window_s": 15.2,
+  "attempt": 0
+ },
+ {
+  "mode": "full",
+  "icount": true,
+  "panics": [],
+  "loop_per_s": 1.5,
+  "qemu_cpu_s_per_s": 0.99,
+  "log_MB_per_s": 27.13,
+  "blocks_logged_per_s_avg": 357212,
+  "window_s": 15.2,
+  "attempt": 1
+ }
+]

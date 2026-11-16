@@ -1,0 +1,96 @@
+[live] 4 sketch address ranges; map table 37943 rows
+[live   0.014s] core 1: now executing mapdemo.ino:26
+[live   0.014s] core 1: now executing mapdemo.ino:27
+[live   0.014s] core 1: now executing mapdemo.ino:28
+[live   0.014s] core 1: now executing mapdemo.ino:29
+[live   0.014s] core 1: now executing mapdemo.ino:30
+[live   0.014s] core 1: now executing blinker.cpp:3
+[live   0.014s] core 1: now executing blinker.cpp:4
+[live   0.014s] core 1: now executing blinker.cpp:5
+[live   0.014s] core 1: now executing blinker.cpp:6
+[live   0.014s] core 1: now executing mapdemo.ino:31
+[live   0.014s] core 1: now executing mapdemo.ino:33
+[live   0.014s] core 1: now executing mapdemo.ino:35
+[live   0.014s] core 1: now executing mapdemo.ino:18
+[live   0.014s] core 1: now executing mapdemo.ino:19
+[live   0.014s] core 1: now executing mapdemo.ino:20
+[live   0.014s] core 1: now executing mapdemo.ino:15
+[live   0.014s] core 1: now executing mapdemo.ino:24
+[live   0.014s] core 1: now executing mapdemo.ino:36
+[live   0.014s] core 1: now executing mapdemo.ino:37
+[live   0.014s] core 1: now executing filter.h:8
+[live   0.014s] core 1: now executing filter.h:9
+[live   0.014s] core 1: now executing filter.h:10
+[live   0.014s] core 1: now executing filter.h:11
+[live   0.014s] core 1: now executing filter.h:12
+[live   0.014s] core 1: now executing filter.h:13
+[live   0.014s] core 1: now executing filter.h:14
+[live   0.014s] core 1: now executing filter.h:16
+[live   0.014s] core 1: now executing filter.h:18
+[live   0.014s] core 1: now executing mapdemo.ino:38
+[live   0.014s] core 1: now executing blinker.cpp:8
+[live   0.014s] core 1: now executing blinker.cpp:9
+[live   0.014s] core 1: now executing blinker.cpp:10
+[live   0.014s] core 1: now executing blinker.cpp:12
+[live   0.014s] core 1: now executing blinker.cpp:36
+[live   0.014s] core 1: now executing mapdemo.ino:39
+[live   0.014s] core 1: now executing mapdemo.ino:40
+[live   0.014s] core 1: now executing mapdemo.ino:41
+[live   0.014s] core 1: now executing filter.h:18
+[live   0.014s] core 1: now executing mapdemo.ino:41
+[live   0.014s] core 1: now executing mapdemo.ino:44
+[live   0.014s] core 1: now executing mapdemo.ino:45
+[live   0.014s] core 1: now executing mapdemo.ino:33
+[live   0.014s] core 1: now executing mapdemo.ino:35
+[live   0.014s] core 1: now executing mapdemo.ino:18
+[live   0.014s] core 1: now executing mapdemo.ino:19
+
+[live] 14317 sketch blocks executed in 8 s; processing per read batch: median 1.48 ms
+[live] last UART lines: ['[map] n=630 avg=175 state=2', '[map] n=674 avg=196 state=2']
+[live] per-line instruction hits:
+  core 1  blinker.cpp:3                1
+  core 1  blinker.cpp:4                3
+  core 1  blinker.cpp:5                2
+  core 1  blinker.cpp:6                2
+  core 1  blinker.cpp:8                711
+  core 1  blinker.cpp:9                2133
+  core 1  blinker.cpp:10               1438
+  core 1  blinker.cpp:12               4
+  core 1  blinker.cpp:13               3
+  core 1  blinker.cpp:14               2
+  core 1  blinker.cpp:18               4
+  core 1  blinker.cpp:19               3
+  core 1  blinker.cpp:20               3
+  core 1  blinker.cpp:24               1410
+  core 1  blinker.cpp:36               1422
+  core 1  filter.h:8                   711
+  core 1  filter.h:9                   4266
+  core 1  filter.h:10                  711
+  core 1  filter.h:11                  1422
+  core 1  filter.h:12                  2133
+  core 1  filter.h:13                  1422
+  core 1  filter.h:14                  16
+  core 1  filter.h:16                  1422
+  core 1  filter.h:18                  3641
+  core 1  mapdemo.ino:15               1422
+  core 1  mapdemo.ino:18               711
+  core 1  mapdemo.ino:19               2136
+  core 1  mapdemo.ino:20               1424
+  core 1  mapdemo.ino:21               153
+  core 1  mapdemo.ino:24               1423
+  core 1  mapdemo.ino:26               1
+  core 1  mapdemo.ino:27               11
+  core 1  mapdemo.ino:28               2
+  core 1  mapdemo.ino:29               3
+  core 1  mapdemo.ino:30               2
+  core 1  mapdemo.ino:31               3
+  core 1  mapdemo.ino:33               711
+  core 1  mapdemo.ino:35               3560
+  core 1  mapdemo.ino:36               4272
+  core 1  mapdemo.ino:37               2848
+  core 1  mapdemo.ino:38               1426
+  core 1  mapdemo.ino:39               4266
+  core 1  mapdemo.ino:40               48
+  core 1  mapdemo.ino:41               128
+  core 1  mapdemo.ino:44               1422
+  core 1  mapdemo.ino:45               2135

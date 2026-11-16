@@ -42,6 +42,7 @@ def main() -> None:
     ap.add_argument("--seconds", type=float, default=10.0)
     ap.add_argument("--icount", action="store_true", help="-icount shift=auto (stable, ~3.5x slower)")
     ap.add_argument("--max-print", type=int, default=60, help="line transitions to print")
+    ap.add_argument("--ready", default=r"\[(map|spike|bench)\]", help="UART regex: the sketch is running")
     a = ap.parse_args()
     build = (STEP / a.build) if (STEP / a.build).exists() else (STEP.parent / "01-build" / a.build)
     sk = (STEP / a.sketch) if (STEP / a.sketch).exists() else (STEP.parent / "01-build" / a.sketch)
@@ -69,6 +70,9 @@ def main() -> None:
         t_end = time.perf_counter() + a.seconds + 30
         while not log.exists() and time.perf_counter() < t_end:
             time.sleep(0.05)
+        # Start the window once the sketch is running (boot is slower with nochain);
+        # the log is still read from its start, so setup() shows up as backlog.
+        q.wait_for(a.ready, 90)
         t_start = time.perf_counter()
         with open(log, "r", errors="replace") as f:
             cur: list[int] | None = None

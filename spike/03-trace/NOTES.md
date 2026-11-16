@@ -185,3 +185,120 @@ Results in `results/gdblocals-build-a-esp32-o{g,s}-mapdemo.txt`.
 - **`-Og`**: at a breakpoint on function entry, `MovingAverage::add` shows **`this=0x0`, which is wrong** (the object is at `0x3ffc1d4c`). Its location info starts after the prologue. A variable view must stop after the prologue, or flag entry-point values as unreliable.
 - `<optimized out>`: 1 value in each build (a local not yet computed at the stop point). This small fixture doesn't show worse variable loss at `-Os`; bigger functions will.
 - Path A IDF frames point at CI paths (`/home/runner/...`, "No such file or directory"); see §9.
+
+### 12. Tracing overhead on a typical sketch (`tools/realistic.py`, inside the lock, 14:09)
+
+mapdemo `-Og`: `loop()` does a little work plus `delay(10)`. 15 s windows after tracing is switched on. Raw: `results/realistic-build-a-esp32-og-mapdemo.json`.
+
+| Mode | `loop()`/s | QEMU host CPU (cores) | Logged | Result |
+|---|---|---|---|---|
+| real time, no tracing | 52.8 | 0.06 | — | ok |
+| **real time, `in_asm,exec,nochain` + `-dfilter` sketch ranges** | **56.1** | **0.13** | **1,221 blocks/s, 0.09 MB/s** | **ok: keeps real time** |
+| real time, `exec,nochain` everything | — | 1.6–1.9 | 150–165 k blocks/s, 12 MB/s | TG0 watchdog reset, 2/2 |
+| icount, no tracing | 10.8 | 0.03 | — | ok |
+| icount, `-dfilter` sketch | 14.2 | 0.04 | 383 blocks/s | ok |
+| icount, everything | 1.5 | 1.0 | 310–360 k blocks/s, 25–27 MB/s | 1 reboot in 2 runs |
+
+- `loop()` rates differ ±10 % between runs (52.8 vs 56.1); the filtered trace's cost is inside that noise.
+- **Conclusion:** for a typical sketch that mostly waits, a sketch-only exec trace is essentially free in real time. The bench (all hot code is sketch code) is the opposite extreme: there the logger's ~0.1–0.15 M blocks/s ceiling and `nochain`'s ~7.8× cost make it unusable (§6).
+
+### 13. Live prototype (question 5): `tools/live.py`
+
+```
+python tools/live.py --build build-a-esp32-og-mapdemo --sketch mapdemo --seconds 8
+```
+- QEMU runs in real time with `-d in_asm,exec,nochain -dfilter <sketch ranges> -D <log>`. The script tails the log while QEMU writes it, maps each block's instructions to lines (cached per block), and prints `core N: now executing <file>:<line>` transitions, then per-line hit counts. Output: `results/live-build-a-esp32-og-mapdemo.txt`.
+- 14,317 sketch blocks in the window; processing median **1.5 ms per read batch** (Python).
+- Consistency check: `loop()` entry (`mapdemo.ino:33`), `MovingAverage::add` entry (`filter.h:8`) and `Blinker::step` entry (`blinker.cpp:8`) each have exactly **711** executions, once per iteration. The clamp `v = 200;` (`:21`) has 153 (only when `v > 200`). The 500 ms print branch (`:40–41`) is rare, as expected.
+- Limitations: the trace goes through a text file; a product version would use a pipe or socket. `-dfilter` filters on a block's *start* address, but control returning from a callee starts a new block inside the sketch, so sketch instructions are covered. Inlined header code inside sketch functions is reported at the header line (use the inline chain, §9).
+
+### 14. Live variables without halting: HMP `xp` reads (functional test, 14:40)
+
+- `xp /1wx <addr>` on the monitor while the guest runs reads physical memory without stopping it (ESP32 data RAM addresses are physical, no MMU). Example reply: `000000003ffc1d3c: 0x00000002`.
+- Read rate **833–1,660 reads/s** (one connection, synchronous). Values are correct: `g_samples` rose at 33.6/s while the sketch's own counter (UART) rose at 33.7/s, monotonically.
+- Stability: across 9 runs (3× max rate, 3× 100 Hz, 3× no reads, 12 s each, host loaded by another session's builds), **no panic while reads were running** in the 4 runs that got that far. The 2 failures were boot cache panics before any read (the known spurious issue), and the 3 no-read controls were clean. The first exploratory run did panic during reads; given these controls I count it as the spurious panic, not as caused by `xp`.
+- Caveats: reads aren't atomic with the guest (a multi-word value or struct can be torn); fine for counters and flags, not for consistent snapshots (halt for those). Registers and locals still need the gdbstub (halted) and DWARF location expressions.
+
+### 15. GDB stub costs for step mode (`tools/gdbstep.py`, inside the lock)
+
+mapdemo `-Og`, our own RSP client, breakpoint on `loop()`, stepping on the core that hit it (thread 2 = core 1). Raw: `results/gdbstep-*.json`.
+
+| Measure | `-icount shift=auto` | default (real time) |
+|---|---|---|
+| breakpoint hit → continue round trips | 1,457 /s | GDBSTEP_DEFAULT_BP |
+| instruction single-steps | 4,992 /s (0.2 ms each) | GDBSTEP_DEFAULT_STEP |
+| source-line steps (step until the DWARF line changes; steps *into* callees) | 123 /s, 26.6 instructions per line | GDBSTEP_DEFAULT_LINE |
+| memory reads while halted (`m`, 4 bytes) | 14,969 /s | GDBSTEP_DEFAULT_MEM |
+| live variable sampling (halt → read → continue) | 97 /s | GDBSTEP_DEFAULT_VAR |
+
+- The line trail is the expected path: `loop` 33 → 35 → `sensorSample` 18–20 → `scale` 15 → 24 → 36–37 → `MovingAverage::add` (`filter.h` 8–16) → `value` 18 → 38 → `Blinker::step` → 39 → 44–45.
+- Single-stepping runs with interrupts and timers masked (QEMU's default `NOIRQ|NOTIMER`, §5), so a step never wanders into an ISR.
+- One step is 0.2 ms, so an interactive "step" button is instant. Even a "next line" that steps over a call by single-stepping through it (~25 instructions per line here) takes ~5 ms. Stepping over a long call should set a temporary breakpoint at the return address instead (`Z0`, ~0.7 ms round trip).
+
+## REPORT
+
+Espressif QEMU 9.2.2 (esp_develop_9.2.2_20260417), Windows 11, path A builds of the step 1 sketch plus two fixtures (`bench/`, `mapdemo/`), ESP32. Evidence: the sections above and `results/`.
+
+### Q1. Execution-capture options
+
+| Option | Available? | Complete? | Cost | Per core? | Verdict |
+|---|---|---|---|---|---|
+| (a) TCG plugins `-plugin` | **No**: "plugin interface not enabled in this build"; static build (`--static --without-default-features`, Espressif CI script) | — | — | — | Needs our own non-static QEMU build (§1, install request) |
+| (b1) `-d in_asm,exec,nochain` (+ `-dfilter`) | Yes, switchable at runtime via the monitor | **Yes** (with `nochain`) | Logger ceiling ~0.1–0.35 M blocks/s; `nochain` alone 7.8× on CPU-bound code; filtered user-code trace on a typical sketch ≈ free (§6, §12) | **Yes** (`Trace <cpu>`) | **Best available for the live overlay** |
+| (b2) `-d exec` / `-trace exec_tb` without `nochain` | Yes | **No** (85 of ~200 M iterations) | 2.7–4× slower | `exec` yes, `exec_tb` no | Useless for coverage |
+| (c) gdbstub `-gdb tcp::port` | Yes (`qfThreadInfo` = one thread per core) | Sampling / stepping | 100 Hz PC sampling −17 %; ~5,000 single-steps/s; ~1,450 breakpoint round trips/s | Yes | **Step mode; cheap "where is each core" sampling** |
+| (d1) HMP `info registers -a` while running | Yes | — | Stale (biased) PC; crashed the chip 3/3 at high rate | Yes | **Don't use** on a running guest |
+| (d2) HMP `xp` memory reads while running | Yes | — | ~850–1,660 reads/s, no halt, no measurable slowdown | n/a | **Live values of globals/statics** |
+| (d3) `-icount …,rr=record/replay` | **No**: "not supported with multiple CPUs"; `-smp 1` doesn't run the ESP32 machine | — | — | — | Not available |
+| (d4) `-dfilter`, `-d tid`, runtime `log`/`logfile`, `trace-event` | Yes | — | — | — | Building blocks for (b1) |
+
+### Q2. Overhead (core 1 loop throughput, bench `-Og`, real time unless noted; §6)
+- No capture: 169 M iterations/s (QEMU runs this loop ~10× faster than a 240 MHz ESP32 would, an estimate; CPU speed isn't modelled in default mode).
+- `-icount shift=auto`: 0.15× (6.8× slower). gdbstub attached, idle: 0.90×. gdbstub PC sampling at 100 Hz: **0.83×**. HMP sampling at 100 Hz: 0.85× (but biased). `-d in_asm`: 0.81×. `nochain` alone: **0.13×**.
+- Full exec tracing of hot code: thousands of times slower (logger ~150 k blocks/s vs ~420 M blocks/s), and the chip resets from the hardware TG0 watchdog (or ESP-IDF's task watchdog with `-dfilter`).
+- Typical sketch (mostly waiting), sketch-only exec trace: no measurable slowdown (56.1 vs 52.8 loop/s), 0.13 host cores, 0.09 MB/s (§12).
+
+### Q3. Address → source mapping (§9)
+- **Shares of executed instructions (idle-ish sketches): sketch 0.007–0.03 %, Arduino core 0.001–0.02 %, ESP-IDF 95.6–97 %, toolchain libs ≤0.2 %, ROM 2.8–4.4 %.** Every non-ROM address had line info (`nodebug` 0). Most IDF time is spinlock spinning and FreeRTOS tick handling under emulation.
+- **Inlining and `-Os` hurt.** On mapdemo:
+  - functions that exist as code: 6 → 4;
+  - sketch lines that own code: 51 → 42 (−18 %);
+  - line-table addresses inside inlined code: 13 % → 33 %.
+  - Worst case, **tail merging makes one `switch` branch execute code attributed to another branch's lines** (confirmed in the disassembly). At `-Os` the overlay can point at the wrong line.
+  - The step 1 sketch alone is too small to show any of this (22 = 22 lines).
+- **Speed:** full-ELF line table in 0.17 s (`objdump`) / 0.39 s (Python incl. `nm`), 38 k addresses, binary-search lookup. **Precompute the table per build, cache lines per translation block, and count per block at run time.** Live mapping is cheap (Python: 1.26 M blocks analysed in 1.3 s; the live prototype takes 1.5 ms per batch).
+- **Path A vs B:** path A's precompiled IDF has DWARF (`-Os`, CI paths → source not on disk without path mapping). Path B would give `-Og` IDF lines and local paths. That doesn't change the sketch-side answer; not built here (it would re-copy ~600 MB).
+
+### Q4. Dual core
+**Yes.** `-d exec` prints the vCPU index per block (0 = PRO_CPU, 1 = APP_CPU), and the gdbstub exposes each core as a thread with its own PC. `loop()` code showed up on core 1 only, and the bench's core 0 task on core 0. `-trace exec_tb` lacks the CPU index. Under `-icount` the cores are scheduled round-robin, so per-core timing is emulator scheduling.
+
+### Q5. Working prototype
+`tools/live.py` (§13): runs the sketch in real time and prints a live `core 1: now executing mapdemo.ino:NN` / `filter.h:NN` / `blinker.cpp:NN` stream plus per-line hit counts, with consistent counts (711 per-iteration lines). `tools/tracerun.py` does the same as a whole-system capture with category shares.
+
+### Q6. Recommendation
+
+| Product feature | Method for v1 (no QEMU changes) | Why |
+|---|---|---|
+| **Live overlay** (flowchart / line highlight, hit counts) | `-d in_asm,exec,nochain` + `-dfilter` = user-code address ranges from DWARF, switched on/off at runtime through the QEMU monitor; the app reads the stream (file → later a pipe/socket), caches block → lines, counts per line and per core | Complete for user code, says which core, essentially free for typical sketches in real time |
+| Overlay fallback when user code is CPU-hot (log rate > ~50 k blocks/s) | Switch to **gdbstub PC sampling at ~100 Hz** (heat map, −17 %), or to a "slow-motion" mode: `-icount` + the QEMU watchdog disabled | The text logger can't keep up with hot code, and the watchdogs fire. Show it in the fidelity indicator. |
+| **Step mode** | gdbstub with our own RSP client (or bundled `xtensa-esp32-elf-gdb`): breakpoints, single-step with IRQs masked, line steps driven by our DWARF line table, step-over via temporary breakpoints | ~5,000 steps/s, ~1,450 breakpoint round trips/s: instant for a person |
+| **Variables** | Globals/statics live: HMP `xp` reads while running (~1,000/s, no halt; may tear multi-word values). Consistent snapshots, locals, registers: halt via gdbstub, read memory (15 k reads/s) and evaluate DWARF locations (gdb does this; our own evaluator later) | Locals need halting and DWARF; `this`/args at function entry can be wrong at `-Og` (§11) |
+| Build profile | Keep **`-Og` as the default** ("clearest visuals"); mark `-Os` views as approximate | `-Os` loses 18 % of lines, a third of code is inlined, and tail merging can show the wrong branch |
+
+**What's missing, and the cost:**
+1. **TCG plugin** (the proper live-trace path: per-block callbacks without `nochain` or text logging, likely far cheaper — *unmeasured*).
+   - Cost: build Espressif QEMU ourselves with MSYS2, **non-static**, and ship its DLLs (glib/gcrypt LGPL, etc.), repeated for every Espressif release. Plus a plugin (C) in **its own repo, QEMU zone: GPL-2.0-or-later or MIT, to be decided**, talking to the app only over a socket or shared memory.
+   - Licence and redistribution: LGPL/GPL source offers if we bundle QEMU (prefer download on demand).
+   - Install request in `parallel/status-trace.md`. Recommended as a separate, bounded follow-up spike once the product shape is clear.
+2. **No record/replay** for the dual-core ESP32 machine, so no "record cheaply, trace later" and no reverse debugging. That would be a large QEMU-zone project.
+3. **Watchdogs:** when tracing slows the guest, the hardware TG0 WDT can be disabled in QEMU (`timer.esp32.timg` `wdt_disable`). The ESP-IDF task WDT can only be changed in firmware config. Both are fidelity changes to show to the user.
+4. **ESP-IDF source for path A** needs path mapping from the CI paths to a matching local ESP-IDF (unverified match). Path B avoids it.
+5. **Inline-aware DWARF handling** (inline chains, `DW_TAG_inlined_subroutine`, location lists) is needed in the app's analysis engine. Plan for gimli/libdwarf-class parsing, not just line tables.
+
+**Licences of what this step used:** QEMU GPL-2.0 (separate process); binutils and gdb GPL-3.0 (separate processes; fine next to an AGPLv3 app, with redistribution duties if bundled); Python stdlib (PSF); our scripts are app zone. Nothing was linked; no QEMU-zone code was written (no plugin, since plugins aren't possible with the shipped build).
+
+**Not done / caveats:**
+- No path B or ESP32-S3 traces (the S3 shares the QEMU build, so plugin availability is the same; mapping shares weren't measured).
+- The plugin speed-up is an expectation, not a measurement.
+- `ruff` isn't installed, so no linter ran on the Python tools; they were exercised by running them.
+- Silicon cycle counts are estimates.
