@@ -33,7 +33,9 @@ $results = foreach ($c in $Chip) {
   if ($Clean -and (Test-Path $out)) { Remove-Item -Recurse -Force $out }
   Write-Host "`n===== $name =====" -ForegroundColor Cyan
   $sw = [Diagnostics.Stopwatch]::StartNew()
-  $defaults = (@((Join-Path $here 'sdkconfig.qemu_eth')) + ($ExtraDefaults | ForEach-Object { (Resolve-Path $_).Path })) -join ';'
+  # Passing SDKCONFIG_DEFAULTS replaces the project's own sdkconfig.defaults, so list it first.
+  $own = @(Join-Path $proj 'sdkconfig.defaults' | Where-Object { Test-Path $_ })
+  $defaults = ($own + @((Join-Path $here 'sdkconfig.qemu_eth')) + ($ExtraDefaults | ForEach-Object { (Resolve-Path $_).Path })) -join ';'
   & idf.py -C $proj -B $out "-DIDF_TARGET=$c" "-DSDKCONFIG=$out\sdkconfig" "-DSDKCONFIG_DEFAULTS=$defaults" build
   $ok = ($LASTEXITCODE -eq 0)
   if ($ok) {

@@ -110,6 +110,15 @@ Build outputs (`build-*/`) are git-ignored.
   - "Cancel" silently creates a block rule.
   - The app should bind `0.0.0.0` only for ports the user explicitly exposes.
 
+### HTTPS / TLS on both chips (checking the community S3 report) [own test]
+- `idf_https_request` (ESP-IDF example, `SPDX-License-Identifier: Apache-2.0`, Mbed TLS contributors). First build: 115 s / 118 s.
+- **Build-script bug, since fixed:** passing `-DSDKCONFIG_DEFAULTS=…` *replaces* a project's own `sdkconfig.defaults`, so the example's `CONFIG_MBEDTLS_HAVE_TIME_DATE=y`, `CONFIG_LWIP_SNTP_MAX_SERVERS=2` and `SINGLE_APP_LARGE` were missing. `build-idf.ps1` now lists the project's own file first. The same trap applies to the product's build engine: user projects' own `sdkconfig.defaults` must be merged, not replaced.
+- With that first build (`-icount`, 60 s, 2 runs per chip):
+  - **ESP32: 2/2, S3: 2/2.** TLS connections to `www.howsmyssl.com` gave `HTTP/1.1 200 OK`, 2–3 times per run, on both chips.
+  - Every run first hit `esp_netif_sntp_init: Failed initialize SNTP service` → `ESP_ERROR_CHECK failed` → reboot. That's the missing `SNTP_MAX_SERVERS=2` above, a config error, not QEMU.
+  - Min free heap: ESP32 ~222 KB, S3 ~302 KB.
+- **The community report of S3-only TLS failure under QEMU (esp-idf #15446, https://esp32.com/viewtopic.php?p=144562) did not reproduce** with ESP-IDF v5.5.5 + QEMU 9.2.2 (HTTPS GET; that report was MQTTS). A rebuild with the example's full config (certificate time check via SNTP over UDP) is queued.
+
 ### Community cross-checks (rule 12)
 - [community] An esp32.com thread reports **TLS (MQTTS) failing under QEMU on ESP32-S3 only**, working on ESP32/ESP32-C3; filed as esp-idf issue #15446. Status unknown. https://esp32.com/viewtopic.php?p=144562 . **Relevant to the product: many sketches use HTTPS/MQTTS.** To test on S3 here (to do).
 - [community] slirp has **no TCP window scaling**, so at most 64 KiB is in flight; it's commonly described as the slowest QEMU networking mode (passt presentation, https://passt.top/everything_open_2023.pdf). One anecdotal report gives ~34 Mbit/s for a Windows host with `-nic user`: https://lists.nongnu.org/archive/html/qemu-discuss/2022-04/msg00012.html . To compare with our own measurement (question 7).
