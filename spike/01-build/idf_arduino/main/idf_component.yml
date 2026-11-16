@@ -1,0 +1,3 @@
+dependencies:
+  # Pinned to the same core version that path A uses.
+  espressif/arduino-esp32: "==3.3.12"

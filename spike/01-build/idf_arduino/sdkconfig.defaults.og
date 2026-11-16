@@ -1,0 +1,4 @@
+# "Clearest visuals" flavour: -Og applies to EVERYTHING here (ESP-IDF, the
+# Arduino core and the sketch), unlike path A, where only the sketch and core
+# are recompiled.
+CONFIG_COMPILER_OPTIMIZATION_DEBUG=y

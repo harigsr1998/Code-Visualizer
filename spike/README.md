@@ -2,7 +2,7 @@
 
 Everything in this folder is experimental and will **not** become product code. Its purpose is to prove or disprove the riskiest technical assumptions before real development starts.
 
-**Status:** folder created; no code yet. Waiting for the go-ahead to start.
+**Status:** step 1 (Build) done on 2026-11-16: 8/8 builds, 8/8 boot in QEMU (see `NOTES.md`). Step 2 (Boot) is next.
 
 ## Questions to answer
 

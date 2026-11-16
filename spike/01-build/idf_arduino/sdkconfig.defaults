@@ -1,0 +1,7 @@
+# Required by arduino-esp32 when used as an ESP-IDF component.
+CONFIG_FREERTOS_HZ=1000
+# Call setup()/loop() like the Arduino IDE does.
+CONFIG_AUTOSTART_ARDUINO=y
+# Same flash layout as path A: 4 MB flash, so the merged image is QEMU-sized.
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_PARTITION_TABLE_SINGLE_APP_LARGE=y
