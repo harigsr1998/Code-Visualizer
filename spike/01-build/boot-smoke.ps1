@@ -12,6 +12,8 @@ param(
   [Parameter(Mandatory)][string]$Image,
   [ValidateSet('esp32', 'esp32s3')][string]$Chip = 'esp32',
   [int]$Seconds = 8,
+  # Extra QEMU arguments, e.g. '-icount','shift=auto'.
+  [string[]]$QemuExtra = @(),
   # QEMU isn't on PATH on this machine (see tools-installed.txt item 6).
   [string]$QemuBin = 'C:\Espressif\tools\tools\qemu-xtensa\esp_develop_9.2.2_20260417\qemu\bin'
 )
@@ -22,7 +24,7 @@ $qemu = Join-Path $QemuBin 'qemu-system-xtensa.exe'
 
 # Relative file names + WorkingDirectory avoid quoting drive-letter paths for QEMU.
 $qemuArgs = @('-machine', $Chip, '-display', 'none', '-monitor', 'none',
-  '-serial', "file:$log", '-drive', "file=$($img.Name),if=mtd,format=raw")
+  '-serial', "file:$log", '-drive', "file=$($img.Name),if=mtd,format=raw") + $QemuExtra
 $proc = Start-Process -FilePath $qemu -ArgumentList $qemuArgs -WorkingDirectory $img.DirectoryName -PassThru -NoNewWindow
 $exitedEarly = $proc.WaitForExit($Seconds * 1000)
 if (-not $exitedEarly) { Stop-Process -Id $proc.Id -Force }

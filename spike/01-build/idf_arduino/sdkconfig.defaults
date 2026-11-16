@@ -2,6 +2,14 @@
 CONFIG_FREERTOS_HZ=1000
 # Call setup()/loop() like the Arduino IDE does.
 CONFIG_AUTOSTART_ARDUINO=y
-# Same flash layout as path A: 4 MB flash, so the merged image is QEMU-sized.
+# 4 MB flash, so the merged image is QEMU-sized.
 CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
-CONFIG_PARTITION_TABLE_SINGLE_APP_LARGE=y
+
+# --- Match the Arduino IDE's defaults (spike step 1, finding 3) ---------------
+# Arduino's board menu defaults to a 240 MHz CPU; ESP-IDF's default is 160.
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
+# Arduino's "Default 4MB with spiffs" partition table (copied from the core).
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+# Arduino-side log level comparable to the board menu's "Core Debug Level: Warn".
+CONFIG_ARDUHAL_LOG_DEFAULT_LEVEL_WARN=y
