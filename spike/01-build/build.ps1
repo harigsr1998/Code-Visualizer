@@ -34,6 +34,8 @@ param(
   # the flash chip's QE bit, so a QIO build asserts in flash init under QEMU.
   # Real boards usually run QIO. See spike/NOTES.md (step 1) for the implication.
   [ValidateSet('qio', 'dio')][string]$FlashMode = 'dio',
+  # Path A only: extra Arduino board-menu options, e.g. 'CPUFreq=160'. Combine with -BuildTag.
+  [string[]]$BoardOptions = @(),
   # Spike-only assumption: EIM's default install location.
   [string]$IdfProfile = 'C:\Espressif\tools\Microsoft.v5.5.5.PowerShell_profile.ps1'
 )
@@ -63,6 +65,7 @@ $results = foreach ($p in $Path) {
         $cliArgs = @('compile', '--fqbn', "esp32:esp32:$c",
           '--board-options', "FlashMode=$FlashMode", '--board-options', "DebugLevel=$DebugLevel",
           '--build-path', $out)
+        foreach ($bo in $BoardOptions) { $cliArgs += @('--board-options', $bo) }
         if ($o -eq 'Og') { $cliArgs += '--optimize-for-debug' }
         & arduino-cli @cliArgs $sketch
         $ok = ($LASTEXITCODE -eq 0)
