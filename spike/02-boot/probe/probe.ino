@@ -138,9 +138,17 @@ static String t_gpio_isr() {
 }
 
 static String t_adc() {
+#if CONFIG_IDF_TARGET_ESP32S3
+  // On ESP32-S3 under QEMU, merely LINKING the ADC driver makes the firmware hang
+  // during ESP-IDF startup (ADC calibration), before setup(). See 02-boot/adc_min
+  // and spike/NOTES.md. So analogRead is compiled out here to let the other tests run.
+  (void)PIN_ADC;
+  return "CRASH not run on S3: linking the ADC driver hangs boot before setup() (see adc_min)";
+#else
   int raw = analogRead(PIN_ADC);
   uint32_t mv = analogReadMilliVolts(PIN_ADC);
   return fmt("RAN analogRead=%d analogReadMilliVolts=%lu (pin floating)", raw, (unsigned long)mv);
+#endif
 }
 
 static String t_pwm_ledc() {

@@ -190,6 +190,8 @@ logs/
 # -----------------------------------------------------------------------------
 .claude/settings.local.json
 CLAUDE.local.md
+# Conversation exports from /export (they may contain private details). Keep them outside the repo.
+*-chat-export.txt
 
 # -----------------------------------------------------------------------------
 # OS files

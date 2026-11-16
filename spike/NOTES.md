@@ -142,4 +142,18 @@ Setup: `02-boot/probe/probe.ino` tests 19 Arduino API areas. `02-boot/probe-run.
   - **RMT**: the same panic in `rmt_tx_disable` reading the interrupt-status register.
   - **Wi-Fi** (`WiFi.mode(WIFI_STA)`): `assert failed: esp_phy_enable phy_init.c:336`.
 - **Expected log noise:** the LittleFS "Corrupted dir pair / mount failed (-84)" appears on first mount of a blank partition, then the format succeeds (the same happens on real hardware).
-- Remaining: probe path A ESP32-S3 and path B ESP32/S3; check whether the `cpufreq` test destabilizes the next test; summarize per peripheral.
+- **Path B ESP32 probe = same verdicts as path A for every test.**
+  - The ADC and RMT crashes show as "Interrupt wdt timeout" instead of "Cache error". It's the same root cause: a read of an unemulated peripheral register.
+  - Path B's flash clock is 40 MHz versus Arduino's 80 MHz. Add that to the board-menu → sdkconfig mapping (step 1, finding 3).
+
+### ESP32-S3: linking the ADC driver stops the firmware before `setup()`
+- Both S3 probe builds (path A and B) hang on **every** boot. Path B's log shows ESP-IDF startup reaching `heap_init`/`spi_flash` and then `W eFuse: calibration efuse version does not match`, then silence. `main_task` never starts.
+  - The working step 1 S3 build has no such eFuse line. It goes straight to `sleep_gpio` → `main_task`.
+- **Minimal repro** `02-boot/adc_min/adc_min.ino`: `setup()` prints a line; `loop()` calls `analogRead(1)`. Path A ESP32-S3 `-Og`: `setup()` is **never reached**, in default mode or with `-icount shift=auto`. The output stops at the bootloader's `entry 0x403c8898`.
+- **Interpretation:** when the ADC driver is linked in, ESP-IDF runs ADC calibration at startup, and QEMU doesn't emulate the S3 SAR ADC. So **any S3 sketch that uses `analogRead()` anywhere never boots in QEMU**. On ESP32, the same `analogRead` only crashes when it's called.
+- **Product impact (high):** `analogRead` is one of the most common Arduino calls. Options:
+  - an ADC model in QEMU (QEMU zone, GPLv2);
+  - for path B builds, an sdkconfig/firmware-side way to skip the startup ADC calibration (to investigate);
+  - at minimum, detect this case and say so clearly instead of showing a silent hang (fidelity indicator, D10).
+- The probe now compiles `analogRead` out on S3, so the other S3 tests can run. The S3 ADC row is reported from `adc_min`.
+- Remaining: S3 probe results (both paths); check whether the `cpufreq` test destabilizes the next test; per-peripheral summary.
