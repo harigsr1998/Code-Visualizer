@@ -1,0 +1,10 @@
+# Spike step 5: run ESP-IDF protocol examples over QEMU's emulated Ethernet.
+# Same settings Espressif uses for its own QEMU CI (e.g. examples/protocols/
+# https_x509_bundle/sdkconfig.ci.default_crt_bundle), plus a 4 MB flash so the
+# merged image matches what we boot in QEMU.
+CONFIG_EXAMPLE_CONNECT_ETHERNET=y
+CONFIG_EXAMPLE_USE_OPENETH=y
+CONFIG_EXAMPLE_CONNECT_WIFI=n
+CONFIG_ETH_USE_SPI_ETHERNET=n
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_ESPTOOLPY_FLASHMODE_DIO=y
