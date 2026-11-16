@@ -1,0 +1,17 @@
+listening on 127.0.0.1:5576 (stream)
+QEMU connected
+   5.085 stream    UDP 0.0.0.0:68 -> 255.255.255.255:67 350B DHCP
+   5.582 stream    UDP 0.0.0.0:68 -> 255.255.255.255:67 350B DHCP
+   5.940 stream    IPv6 next=0 86B
+   5.944 stream    IPv6 next=58 78B
+   5.945 stream    IPv6 next=58 62B
+   6.023 stream    IPv6 next=0 86B
+   7.081 stream    UDP 0.0.0.0:68 -> 255.255.255.255:67 350B DHCP
+   7.647 stream    IPv6 next=0 86B
+   8.591 stream    UDP 0.0.0.0:68 -> 255.255.255.255:67 350B DHCP
+  10.440 stream    IPv6 next=58 70B
+  13.256 stream    UDP 0.0.0.0:68 -> 255.255.255.255:67 350B DHCP
+  14.281 stream    IPv6 next=58 70B
+  16.780 stream    UDP 0.0.0.0:68 -> 255.255.255.255:67 350B DHCP
+  20.746 stream    UDP 0.0.0.0:68 -> 255.255.255.255:67 350B DHCP
+SUMMARY stream=14 stream_bytes=2988

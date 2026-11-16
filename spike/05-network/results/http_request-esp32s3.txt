@@ -1,0 +1,11 @@
+I (1647) ethernet_connect: Ethernet Link Up
+I (2657) esp_netif_handlers: example_netif_eth ip: 10.0.2.15, mask: 255.255.255.0, gw: 10.0.2.2
+I (3737) example: DNS lookup succeeded. IP=172.66.147.243
+I (3787) example: ... connected
+HTTP/1.1 200 OK
+I (15257) example: DNS lookup succeeded. IP=172.66.147.243
+I (15397) example: ... connected
+HTTP/1.1 200 OK
+I (27497) example: DNS lookup succeeded. IP=172.66.147.243
+I (27667) example: ... connected
+HTTP/1.1 200 OK

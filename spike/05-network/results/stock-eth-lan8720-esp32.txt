@@ -1,0 +1,763 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (639) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (640) boot: compile time Nov 16 2026 14:44:15
+I (640) boot: Multicore bootloader
+I (641) boot: chip revision: v0.0
+I (642) boot.esp32: SPI Speed      : 40MHz
+I (642) boot.esp32: SPI Mode       : DIO
+I (642) boot.esp32: SPI Flash Size : 4MB
+I (643) boot: Enabling RNG early entropy source...
+I (643) boot: Partition Table:
+I (644) boot: ## Label            Usage          Type ST Offset   Length
+I (644) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (645) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (646) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (647) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (647) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (648) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (649) boot: End of partition table
+I (650) boot: No factory image, trying OTA 0
+I (651) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (822) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (892) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (1220) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map
+I (2252) esp_image: segment 4: paddr=0006e944 vaddr=40086e74 size=06a7ch ( 27260) load
+I (2273) esp_image: segment 5: paddr=000753c8 vaddr=50000000 size=00020h (    32) load
+I (2285) boot: Loaded app from partition at offset 0x10000
+I (2286) boot: Set actual ota_seq=1 in otadata[0]
+I (2286) boot: Disabling RNG early entropy source...
+I (2288) cpu_start: Multicore app
+I (6371) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (6371) cpu_start: Pro cpu start user code
+I (6371) cpu_start: cpu freq: 240000000 Hz
+I (6371) app_init: Application information:
+I (6371) app_init: Project name:     spike_idf_arduino
+I (6371) app_init: App version:      6dfda34
+I (6371) app_init: Compile time:     Nov 16 2026 14:50:34
+I (6371) app_init: ELF file SHA256:  16f429641...
+I (6372) app_init: ESP-IDF:          v5.5.5
+I (6372) efuse_init: Min chip rev:     v0.0
+I (6372) efuse_init: Max chip rev:     v3.99 
+I (6372) efuse_init: Chip rev:         v0.0
+I (6372) heap_init: Initializing. RAM available for dynamic allocation:
+I (6372) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (6373) heap_init: At 3FFB44B8 len 0002BB48 (174 KiB): DRAM
+I (6373) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (6373) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (6373) heap_init: At 4008D8F0 len 00012710 (73 KiB): IRAM
+I (6423) spi_flash: detected chip: gd
+I (6426) spi_flash: flash io: dio
+I (6512) main_task: Started on CPU0
+I (6513) main_task: Calling app_main()
+I (6601) main_task: Returned from app_main()
+I (6601) uart: queue free spaces: 20
+STOCK start, calling ETH.begin()
+Guru Meditation Error: Core  1 panic'ed (LoadStorePIFAddrError). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400e4e51  PS      : 0x00060730  A0      : 0x800dfa4e  A1      : 0x3ffb9970  
+A2      : 0x3ffbc7c4  A3      : 0x3ffb9a44  A4      : 0x00000000  A5      : 0x3ffbc828  
+A6      : 0x00000001  A7      : 0x3ffb99fc  A8      : 0x3ff69800  A9      : 0x3ffb9940  
+A10     : 0xffff1fff  A11     : 0x0000000e  A12     : 0x40082728  A13     : 0x3f413fe0  
+A14     : 0x3f413eb0  A15     : 0x00000000  SAR     : 0x00000000  EXCCAUSE: 0x0000000f  
+EXCVADDR: 0x3ff6980c  LBEG    : 0x4000c46c  LEND    : 0x4000c477  LCOUNT  : 0x00000000  
+
+
+Backtrace: 0x400e4e4e:0x3ffb9970 0x400dfa4b:0x3ffb99b0 0x400decb3:0x3ffb9aa0 0x400da981:0x3ffb9ad0
+
+
+
+
+ELF file SHA256: 16f429641
+
+Rebooting...
+ets Jul 29 2019 12:21:46
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (7513) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (7519) boot: compile time Nov 16 2026 14:44:15
+I (7522) boot: Multicore bootloader
+I (7716) boot: chip revision: v0.0
+I (7722) boot.esp32: SPI Speed      : 40MHz
+I (7725) boot.esp32: SPI Mode       : DIO
+I (7727) boot.esp32: SPI Flash Size : 4MB
+I (7803) boot: Enabling RNG early entropy source...
+I (7819) boot: Partition Table:
+I (7821) boot: ## Label            Usage          Type ST Offset   Length
+I (7825) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (7831) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (7838) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (7844) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (7851) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (7858) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (7904) boot: End of partition table
+I (8112) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (8312) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (8412) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (8512) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map
+I (8812) esp_image: segment 4: paddr=0006e944 vaddr=40086e74 size=06a7ch ( 27260) load
+I (8912) esp_image: segment 5: paddr=000753c8 vaddr=50000000 size=00020h (    32) load
+I (9137) boot: Loaded app from partition at offset 0x10000
+I (9137) boot: Disabling RNG early entropy source...
+I (9210) cpu_start: Multicore app
+I (9270) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (9271) cpu_start: Pro cpu start user code
+I (9271) cpu_start: cpu freq: 240000000 Hz
+I (9271) app_init: Application information:
+I (9272) app_init: Project name:     spike_idf_arduino
+I (9272) app_init: App version:      6dfda34
+I (9273) app_init: Compile time:     Nov 16 2026 14:50:34
+I (9273) app_init: ELF file SHA256:  16f429641...
+I (9273) app_init: ESP-IDF:          v5.5.5
+I (9274) efuse_init: Min chip rev:     v0.0
+I (9274) efuse_init: Max chip rev:     v3.99 
+I (9275) efuse_init: Chip rev:         v0.0
+I (9276) heap_init: Initializing. RAM available for dynamic allocation:
+I (9277) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (9278) heap_init: At 3FFB44B8 len 0002BB48 (174 KiB): DRAM
+I (9278) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (9279) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (9280) heap_init: At 4008D8F0 len 00012710 (73 KiB): IRAM
+I (9318) spi_flash: detected chip: gd
+I (9407) spi_flash: flash io: dio
+I (9422) main_task: Started on CPU0
+I (9424) main_task: Calling app_main()
+I (9604) main_task: Returned from app_main()
+I (9608) uart: queue free spaces: 20
+STOCK start, calling ETH.begin()
+Guru Meditation Error: Core  1 panic'ed (LoadStorePIFAddrError). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400e4e51  PS      : 0x00060030  A0      : 0x800dfa4e  A1      : 0x3ffb9970  
+A2      : 0x3ffb678c  A3      : 0x3ffb9a44  A4      : 0x00000000  A5      : 0x3ffb67f0  
+A6      : 0x00000001  A7      : 0x3ffb99fc  A8      : 0x3ff69800  A9      : 0x3ffb9940  
+A10     : 0xffff1fff  A11     : 0x0000000e  A12     : 0x40082728  A13     : 0x3f413fe0  
+A14     : 0x3f413eb0  A15     : 0x00000000  SAR     : 0x00000000  EXCCAUSE: 0x0000000f  
+EXCVADDR: 0x3ff6980c  LBEG    : 0x4000c46c  LEND    : 0x4000c477  LCOUNT  : 0x00000000  
+
+
+Backtrace: 0x400e4e4e:0x3ffb9970 0x400dfa4b:0x3ffb99b0 0x400decb3:0x3ffb9aa0 0x400da981:0x3ffb9ad0
+
+
+
+
+ELF file SHA256: 16f429641
+
+Rebooting...
+ets Jul 29 2019 12:21:46
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (8215) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (8215) boot: compile time Nov 16 2026 14:44:15
+I (8216) boot: Multicore bootloader
+I (8315) boot: chip revision: v0.0
+I (8316) boot.esp32: SPI Speed      : 40MHz
+I (8316) boot.esp32: SPI Mode       : DIO
+I (8316) boot.esp32: SPI Flash Size : 4MB
+I (8385) boot: Enabling RNG early entropy source...
+I (8394) boot: Partition Table:
+I (8394) boot: ## Label            Usage          Type ST Offset   Length
+I (8395) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (8396) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (8396) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (8397) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (8398) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (8399) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (8412) boot: End of partition table
+I (8515) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (8894) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (8994) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (9094) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map
+I (9394) esp_image: segment 4: paddr=0006e944 vaddr=40086e74 size=06a7ch ( 27260) load
+I (9494) esp_image: segment 5: paddr=000753c8 vaddr=50000000 size=00020h (    32) load
+I (9638) boot: Loaded app from partition at offset 0x10000
+I (9638) boot: Disabling RNG early entropy source...
+I (9695) cpu_start: Multicore app
+I (9759) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (9760) cpu_start: Pro cpu start user code
+I (9760) cpu_start: cpu freq: 240000000 Hz
+I (9761) app_init: Application information:
+I (9761) app_init: Project name:     spike_idf_arduino
+I (9761) app_init: App version:      6dfda34
+I (9762) app_init: Compile time:     Nov 16 2026 14:50:34
+I (9762) app_init: ELF file SHA256:  16f429641...
+I (9763) app_init: ESP-IDF:          v5.5.5
+I (9763) efuse_init: Min chip rev:     v0.0
+I (9763) efuse_init: Max chip rev:     v3.99 
+I (9764) efuse_init: Chip rev:         v0.0
+I (9765) heap_init: Initializing. RAM available for dynamic allocation:
+I (9766) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (9767) heap_init: At 3FFB44B8 len 0002BB48 (174 KiB): DRAM
+I (9768) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (9768) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (9770) heap_init: At 4008D8F0 len 00012710 (73 KiB): IRAM
+I (9814) spi_flash: detected chip: gd
+I (9816) spi_flash: flash io: dio
+I (9901) main_task: Started on CPU0
+I (9905) main_task: Calling app_main()
+I (10103) main_task: Returned from app_main()
+I (10114) uart: queue free spaces: 20
+STOCK start, calling ETH.begin()
+Guru Meditation Error: Core  1 panic'ed (LoadStorePIFAddrError). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400e4e51  PS      : 0x00060e30  A0      : 0x800dfa4e  A1      : 0x3ffb9970  
+A2      : 0x3ffbc7c4  A3      : 0x3ffb9a44  A4      : 0x00000000  A5      : 0x3ffbc828  
+A6      : 0x00000001  A7      : 0x3ffb99fc  A8      : 0x3ff69800  A9      : 0x3ffb9940  
+A10     : 0xffff1fff  A11     : 0x0000000e  A12     : 0x40082728  A13     : 0x3f413fe0  
+A14     : 0x3f413eb0  A15     : 0x00000000  SAR     : 0x00000000  EXCCAUSE: 0x0000000f  
+EXCVADDR: 0x3ff6980c  LBEG    : 0x4000c46c  LEND    : 0x4000c477  LCOUNT  : 0x00000000  
+
+
+Backtrace: 0x400e4e4e:0x3ffb9970 0x400dfa4b:0x3ffb99b0 0x400decb3:0x3ffb9aa0 0x400da981:0x3ffb9ad0
+
+
+
+
+ELF file SHA256: 16f429641
+
+Rebooting...
+ets Jul 29 2019 12:21:46
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (12401) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (12401) boot: compile time Nov 16 2026 14:44:15
+I (12401) boot: Multicore bootloader
+I (12501) boot: chip revision: v0.0
+I (12501) boot.esp32: SPI Speed      : 40MHz
+I (12502) boot.esp32: SPI Mode       : DIO
+I (12502) boot.esp32: SPI Flash Size : 4MB
+I (12575) boot: Enabling RNG early entropy source...
+I (12584) boot: Partition Table:
+I (12585) boot: ## Label            Usage          Type ST Offset   Length
+I (12586) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (12587) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (12587) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (12588) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (12589) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (12590) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (12599) boot: End of partition table
+I (12784) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (13385) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (13485) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (13585) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map
+I (13885) esp_image: segment 4: paddr=0006e944 vaddr=40086e74 size=06a7ch ( 27260) load
+I (13985) esp_image: segment 5: paddr=000753c8 vaddr=50000000 size=00020h (    32) load
+I (14187) boot: Loaded app from partition at offset 0x10000
+I (14187) boot: Disabling RNG early entropy source...
+I (14203) cpu_start: Multicore app
+I (14299) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (14301) cpu_start: Pro cpu start user code
+I (14301) cpu_start: cpu freq: 240000000 Hz
+I (14302) app_init: Application information:
+I (14302) app_init: Project name:     spike_idf_arduino
+I (14303) app_init: App version:      6dfda34
+I (14303) app_init: Compile time:     Nov 16 2026 14:50:34
+I (14304) app_init: ELF file SHA256:  16f429641...
+I (14304) app_init: ESP-IDF:          v5.5.5
+I (14304) efuse_init: Min chip rev:     v0.0
+I (14305) efuse_init: Max chip rev:     v3.99 
+I (14305) efuse_init: Chip rev:         v0.0
+I (14307) heap_init: Initializing. RAM available for dynamic allocation:
+I (14307) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (14308) heap_init: At 3FFB44B8 len 0002BB48 (174 KiB): DRAM
+I (14309) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (14310) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (14311) heap_init: At 4008D8F0 len 00012710 (73 KiB): IRAM
+I (14400) spi_flash: detected chip: gd
+I (14480) spi_flash: flash io: dio
+I (14501) main_task: Started on CPU0
+I (14502) main_task: Calling app_main()
+I (14553) main_task: Returned from app_main()
+I (14553) uart: queue free spaces: 20
+STOCK start, calling ETH.begin()
+Guru Meditation Error: Core  1 panic'ed (LoadStorePIFAddrError). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400e4e51  PS      : 0x00060730  A0      : 0x800dfa4e  A1      : 0x3ffb9970  
+A2      : 0x3ffb67a4  A3      : 0x3ffb9a44  A4      : 0x00000000  A5      : 0x3ffb6808  
+A6      : 0x00000001  A7      : 0x3ffb99fc  A8      : 0x3ff69800  A9      : 0x3ffb9940  
+A10     : 0xffff1fff  A11     : 0x0000000e  A12     : 0x40082728  A13     : 0x3f413fe0  
+A14     : 0x3f413eb0  A15     : 0x00000000  SAR     : 0x00000000  EXCCAUSE: 0x0000000f  
+EXCVADDR: 0x3ff6980c  LBEG    : 0x4000c46c  LEND    : 0x4000c477  LCOUNT  : 0x00000000  
+
+
+Backtrace: 0x400e4e4e:0x3ffb9970 0x400dfa4b:0x3ffb99b0 0x400decb3:0x3ffb9aa0 0x400da981:0x3ffb9ad0
+
+
+
+
+ELF file SHA256: 16f429641
+
+Rebooting...
+ets Jul 29 2019 12:21:46
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (1069) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (1070) boot: compile time Nov 16 2026 14:44:15
+I (1073) boot: Multicore bootloader
+I (1176) boot: chip revision: v0.0
+I (1177) boot.esp32: SPI Speed      : 40MHz
+I (1177) boot.esp32: SPI Mode       : DIO
+I (1177) boot.esp32: SPI Flash Size : 4MB
+I (1260) boot: Enabling RNG early entropy source...
+I (1271) boot: Partition Table:
+I (1272) boot: ## Label            Usage          Type ST Offset   Length
+I (1273) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (1273) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (1275) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (1276) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (1277) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (1277) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (1349) boot: End of partition table
+I (1471) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (1671) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (1771) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (1872) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map
+I (2371) esp_image: segment 4: paddr=0006e944 vaddr=40086e74 size=06a7ch ( 27260) load
+I (2472) esp_image: segment 5: paddr=000753c8 vaddr=50000000 size=00020h (    32) load
+I (2718) boot: Loaded app from partition at offset 0x10000
+I (2719) boot: Disabling RNG early entropy source...
+I (2777) cpu_start: Multicore app
+I (2926) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (2927) cpu_start: Pro cpu start user code
+I (2928) cpu_start: cpu freq: 240000000 Hz
+I (2928) app_init: Application information:
+I (2928) app_init: Project name:     spike_idf_arduino
+I (2929) app_init: App version:      6dfda34
+I (2929) app_init: Compile time:     Nov 16 2026 14:50:34
+I (2930) app_init: ELF file SHA256:  16f429641...
+I (2930) app_init: ESP-IDF:          v5.5.5
+I (2930) efuse_init: Min chip rev:     v0.0
+I (2931) efuse_init: Max chip rev:     v3.99 
+I (2931) efuse_init: Chip rev:         v0.0
+I (2933) heap_init: Initializing. RAM available for dynamic allocation:
+I (2933) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (2934) heap_init: At 3FFB44B8 len 0002BB48 (174 KiB): DRAM
+I (2935) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (2936) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (2937) heap_init: At 4008D8F0 len 00012710 (73 KiB): IRAM
+I (2976) spi_flash: detected chip: gd
+I (3066) spi_flash: flash io: dio
+I (3077) main_task: Started on CPU0
+I (3078) main_task: Calling app_main()
+I (3128) main_task: Returned from app_main()
+I (3129) uart: queue free spaces: 20
+STOCK start, calling ETH.begin()
+Guru Meditation Error: Core  1 panic'ed (LoadStorePIFAddrError). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400e4e51  PS      : 0x00060730  A0      : 0x800dfa4e  A1      : 0x3ffb9970  
+A2      : 0x3ffb67a0  A3      : 0x3ffb9a44  A4      : 0x00000000  A5      : 0x3ffb6804  
+A6      : 0x00000001  A7      : 0x3ffb99fc  A8      : 0x3ff69800  A9      : 0x3ffb9940  
+A10     : 0xffff1fff  A11     : 0x0000000e  A12     : 0x40082728  A13     : 0x3f413fe0  
+A14     : 0x3f413eb0  A15     : 0x00000000  SAR     : 0x00000000  EXCCAUSE: 0x0000000f  
+EXCVADDR: 0x3ff6980c  LBEG    : 0x4000c46c  LEND    : 0x4000c477  LCOUNT  : 0x00000000  
+
+
+Backtrace: 0x400e4e4e:0x3ffb9970 0x400dfa4b:0x3ffb99b0 0x400decb3:0x3ffb9aa0 0x400da981:0x3ffb9ad0
+
+
+
+
+ELF file SHA256: 16f429641
+
+Rebooting...
+ets Jul 29 2019 12:21:46
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (4069) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (4070) boot: compile time Nov 16 2026 14:44:15
+I (4072) boot: Multicore bootloader
+I (4181) boot: chip revision: v0.0
+I (4182) boot.esp32: SPI Speed      : 40MHz
+I (4183) boot.esp32: SPI Mode       : DIO
+I (4184) boot.esp32: SPI Flash Size : 4MB
+I (4261) boot: Enabling RNG early entropy source...
+I (4272) boot: Partition Table:
+I (4273) boot: ## Label            Usage          Type ST Offset   Length
+I (4274) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (4275) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (4279) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (4282) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (4284) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (4286) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (4351) boot: End of partition table
+I (4477) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (4671) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (4771) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (4871) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map
+I (5171) esp_image: segment 4: paddr=0006e944 vaddr=40086e74 size=06a7ch ( 27260) load
+I (5271) esp_image: segment 5: paddr=000753c8 vaddr=50000000 size=00020h (    32) load
+I (5498) boot: Loaded app from partition at offset 0x10000
+I (5498) boot: Disabling RNG early entropy source...
+I (5569) cpu_start: Multicore app
+I (5631) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (5632) cpu_start: Pro cpu start user code
+I (5632) cpu_start: cpu freq: 240000000 Hz
+I (5632) app_init: Application information:
+I (5633) app_init: Project name:     spike_idf_arduino
+I (5633) app_init: App version:      6dfda34
+I (5634) app_init: Compile time:     Nov 16 2026 14:50:34
+I (5634) app_init: ELF file SHA256:  16f429641...
+I (5634) app_init: ESP-IDF:          v5.5.5
+I (5635) efuse_init: Min chip rev:     v0.0
+I (5635) efuse_init: Max chip rev:     v3.99 
+I (5636) efuse_init: Chip rev:         v0.0
+I (5637) heap_init: Initializing. RAM available for dynamic allocation:
+I (5638) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (5639) heap_init: At 3FFB44B8 len 0002BB48 (174 KiB): DRAM
+I (5639) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (5640) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (5641) heap_init: At 4008D8F0 len 00012710 (73 KiB): IRAM
+I (5681) spi_flash: detected chip: gd
+I (5766) spi_flash: flash io: dio
+I (5782) main_task: Started on CPU0
+I (5783) main_task: Calling app_main()
+I (5852) main_task: Returned from app_main()
+I (5852) uart: queue free spaces: 20
+STOCK start, calling ETH.begin()
+Guru Meditation Error: Core  1 panic'ed (LoadStorePIFAddrError). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400e4e51  PS      : 0x00060730  A0      : 0x800dfa4e  A1      : 0x3ffb9970  
+A2      : 0x3ffb6478  A3      : 0x3ffb9a44  A4      : 0x00000000  A5      : 0x3ffb64dc  
+A6      : 0x00000001  A7      : 0x3ffb99fc  A8      : 0x3ff69800  A9      : 0x3ffb9940  
+A10     : 0xffff1fff  A11     : 0x0000000e  A12     : 0x40082728  A13     : 0x3f413fe0  
+A14     : 0x3f413eb0  A15     : 0x00000000  SAR     : 0x00000000  EXCCAUSE: 0x0000000f  
+EXCVADDR: 0x3ff6980c  LBEG    : 0x4000c46c  LEND    : 0x4000c477  LCOUNT  : 0x00000000  
+
+
+Backtrace: 0x400e4e4e:0x3ffb9970 0x400dfa4b:0x3ffb99b0 0x400decb3:0x3ffb9aa0 0x400da981:0x3ffb9ad0
+
+
+
+
+ELF file SHA256: 16f429641
+
+Rebooting...
+ets Jul 29 2019 12:21:46
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (2440) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (2441) boot: compile time Nov 16 2026 14:44:15
+I (2443) boot: Multicore bootloader
+I (2548) boot: chip revision: v0.0
+I (2548) boot.esp32: SPI Speed      : 40MHz
+I (2549) boot.esp32: SPI Mode       : DIO
+I (2549) boot.esp32: SPI Flash Size : 4MB
+I (2631) boot: Enabling RNG early entropy source...
+I (2642) boot: Partition Table:
+I (2643) boot: ## Label            Usage          Type ST Offset   Length
+I (2643) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (2644) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (2645) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (2648) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (2649) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (2649) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (2720) boot: End of partition table
+I (2842) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (2943) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (3042) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (3142) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map
+I (3443) esp_image: segment 4: paddr=0006e944 vaddr=40086e74 size=06a7ch ( 27260) load
+I (3542) esp_image: segment 5: paddr=000753c8 vaddr=50000000 size=00020h (    32) load
+I (3767) boot: Loaded app from partition at offset 0x10000
+I (3767) boot: Disabling RNG early entropy source...
+I (3841) cpu_start: Multicore app
+I (3900) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (3900) cpu_start: Pro cpu start user code
+I (3901) cpu_start: cpu freq: 240000000 Hz
+I (3901) app_init: Application information:
+I (3902) app_init: Project name:     spike_idf_arduino
+I (3902) app_init: App version:      6dfda34
+I (3902) app_init: Compile time:     Nov 16 2026 14:50:34
+I (3903) app_init: ELF file SHA256:  16f429641...
+I (3903) app_init: ESP-IDF:          v5.5.5
+I (3904) efuse_init: Min chip rev:     v0.0
+I (3904) efuse_init: Max chip rev:     v3.99 
+I (3904) efuse_init: Chip rev:         v0.0
+I (3906) heap_init: Initializing. RAM available for dynamic allocation:
+I (3906) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (3908) heap_init: At 3FFB44B8 len 0002BB48 (174 KiB): DRAM
+I (3908) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (3909) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (3910) heap_init: At 4008D8F0 len 00012710 (73 KiB): IRAM
+I (3948) spi_flash: detected chip: gd
+I (4037) spi_flash: flash io: dio
+I (4052) main_task: Started on CPU0
+I (4054) main_task: Calling app_main()
+I (4183) main_task: Returned from app_main()
+I (4183) uart: queue free spaces: 20
+STOCK start, calling ETH.begin()
+Guru Meditation Error: Core  1 panic'ed (LoadStorePIFAddrError). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400e4e51  PS      : 0x00060730  A0      : 0x800dfa4e  A1      : 0x3ffb9970  
+A2      : 0x3ffb67a4  A3      : 0x3ffb9a44  A4      : 0x00000000  A5      : 0x3ffb6808  
+A6      : 0x00000001  A7      : 0x3ffb99fc  A8      : 0x3ff69800  A9      : 0x3ffb9940  
+A10     : 0xffff1fff  A11     : 0x0000000e  A12     : 0x40082728  A13     : 0x3f413fe0  
+A14     : 0x3f413eb0  A15     : 0x00000000  SAR     : 0x00000000  EXCCAUSE: 0x0000000f  
+EXCVADDR: 0x3ff6980c  LBEG    : 0x4000c46c  LEND    : 0x4000c477  LCOUNT  : 0x00000000  
+
+
+Backtrace: 0x400e4e4e:0x3ffb9970 0x400dfa4b:0x3ffb99b0 0x400decb3:0x3ffb9aa0 0x400da981:0x3ffb9ad0
+
+
+
+
+ELF file SHA256: 16f429641
+
+Rebooting...
+ets Jul 29 2019 12:21:46
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (10472) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (10472) boot: compile time Nov 16 2026 14:44:15
+I (10473) boot: Multicore bootloader
+I (10575) boot: chip revision: v0.0
+I (10576) boot.esp32: SPI Speed      : 40MHz
+I (10576) boot.esp32: SPI Mode       : DIO
+I (10577) boot.esp32: SPI Flash Size : 4MB
+I (10588) boot: Enabling RNG early entropy source...
+I (10590) boot: Partition Table:
+I (10590) boot: ## Label            Usage          Type ST Offset   Length
+I (10591) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (10591) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (10592) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (10593) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (10594) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (10595) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (10656) boot: End of partition table
+I (10775) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (10975) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (11075) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (11175) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map
+I (11476) esp_image: segment 4: paddr=0006e944 vaddr=40086e74 size=06a7ch ( 27260) load
+I (11575) esp_image: segment 5: paddr=000753c8 vaddr=50000000 size=00020h (    32) load
+I (11777) boot: Loaded app from partition at offset 0x10000
+I (11777) boot: Disabling RNG early entropy source...
+I (11791) cpu_start: Multicore app
+I (11889) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (11890) cpu_start: Pro cpu start user code
+I (11890) cpu_start: cpu freq: 240000000 Hz
+I (11891) app_init: Application information:
+I (11891) app_init: Project name:     spike_idf_arduino
+I (11892) app_init: App version:      6dfda34
+I (11892) app_init: Compile time:     Nov 16 2026 14:50:34
+I (11892) app_init: ELF file SHA256:  16f429641...
+I (11893) app_init: ESP-IDF:          v5.5.5
+I (11893) efuse_init: Min chip rev:     v0.0
+I (11894) efuse_init: Max chip rev:     v3.99 
+I (11894) efuse_init: Chip rev:         v0.0
+I (11896) heap_init: Initializing. RAM available for dynamic allocation:
+I (11896) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (11897) heap_init: At 3FFB44B8 len 0002BB48 (174 KiB): DRAM
+I (11898) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (11899) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (11900) heap_init: At 4008D8F0 len 00012710 (73 KiB): IRAM
+I (11989) spi_flash: detected chip: gd
+I (12071) spi_flash: flash io: dio
+I (12091) main_task: Started on CPU0
+I (12092) main_task: Calling app_main()
+I (12189) main_task: Returned from app_main()
+I (12190) uart: queue free spaces: 20
+STOCK start, calling ETH.begin()
+Guru Meditation Error: Core  1 panic'ed (LoadStorePIFAddrError). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400e4e51  PS      : 0x00060730  A0      : 0x800dfa4e  A1      : 0x3ffb9970  
+A2      : 0x3ffb67a4  A3      : 0x3ffb9a44  A4      : 0x00000000  A5      : 0x3ffb6808  
+A6      : 0x00000001  A7      : 0x3ffb99fc  A8      : 0x3ff69800  A9      : 0x3ffb9940  
+A10     : 0xffff1fff  A11     : 0x0000000e  A12     : 0x40082728  A13     : 0x3f413fe0  
+A14     : 0x3f413eb0  A15     : 0x00000000  SAR     : 0x00000000  EXCCAUSE: 0x0000000f  
+EXCVADDR: 0x3ff6980c  LBEG    : 0x4000c46c  LEND    : 0x4000c477  LCOUNT  : 0x00000000  
+
+
+Backtrace: 0x400e4e4e:0x3ffb9970 0x400dfa4b:0x3ffb99b0 0x400decb3:0x3ffb9aa0 0x400da981:0x3ffb9ad0
+
+
+
+
+ELF file SHA256: 16f429641
+
+Rebooting...
+ets Jul 29 2019 12:21:46
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (4969) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (4969) boot: compile time Nov 16 2026 14:44:15
+I (4970) boot: Multicore bootloader
+I (5072) boot: chip revision: v0.0
+I (5073) boot.esp32: SPI Speed      : 40MHz
+I (5073) boot.esp32: SPI Mode       : DIO
+I (5074) boot.esp32: SPI Flash Size : 4MB
+I (5094) boot: Enabling RNG early entropy source...
+I (5097) boot: Partition Table:
+I (5097) boot: ## Label            Usage          Type ST Offset   Length
+I (5097) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (5098) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (5099) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (5100) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (5101) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (5101) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (5156) boot: End of partition table
+I (5273) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (5572) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (5672) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (5772) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map
+I (6072) esp_image: segment 4: paddr=0006e944 vaddr=40086e74 size=06a7ch ( 27260) load
+I (6172) esp_image: segment 5: paddr=000753c8 vaddr=50000000 size=00020h (    32) load
+I (6319) boot: Loaded app from partition at offset 0x10000
+I (6319) boot: Disabling RNG early entropy source...
+I (6373) cpu_start: Multicore app
+I (6443) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (6444) cpu_start: Pro cpu start user code
+I (6444) cpu_start: cpu freq: 240000000 Hz
+I (6444) app_init: Application information:
+I (6445) app_init: Project name:     spike_idf_arduino
+I (6445) app_init: App version:      6dfda34
+I (6446) app_init: Compile time:     Nov 16 2026 14:50:34
+I (6446) app_init: ELF file SHA256:  16f429641...
+I (6446) app_init: ESP-IDF:          v5.5.5
+I (6447) efuse_init: Min chip rev:     v0.0
+I (6447) efuse_init: Max chip rev:     v3.99 
+I (6448) efuse_init: Chip rev:         v0.0
+I (6449) heap_init: Initializing. RAM available for dynamic allocation:
+I (6450) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (6451) heap_init: At 3FFB44B8 len 0002BB48 (174 KiB): DRAM
+I (6451) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (6452) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (6453) heap_init: At 4008D8F0 len 00012710 (73 KiB): IRAM
+I (6495) spi_flash: detected chip: gd
+I (6496) spi_flash: flash io: dio
+I (6580) main_task: Started on CPU0
+I (6584) main_task: Calling app_main()
+I (6765) main_task: Returned from app_main()
+I (6776) uart: queue free spaces: 20
+STOCK start, calling ETH.begin()
+Guru Meditation Error: Core  1 panic'ed (LoadStorePIFAddrError). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400e4e51  PS      : 0x00060730  A0      : 0x800dfa4e  A1      : 0x3ffb9970  
+A2      : 0x3ffbc7c4  A3      : 0x3ffb9a44  A4      : 0x00000000  A5      : 0x3ffbc828  
+A6      : 0x00000001  A7      : 0x3ffb99fc  A8      : 0x3ff69800  A9      : 0x3ffb9940  
+A10     : 0xffff1fff  A11     : 0x0000000e  A12     : 0x40082728  A13     : 0x3f413fe0  
+A14     : 0x3f413eb0  A15     : 0x00000000  SAR     : 0x00000000  EXCCAUSE: 0x0000000f  
+EXCVADDR: 0x3ff6980c  LBEG    : 0x4000c46c  LEND    : 0x4000c477  LCOUNT  : 0x00000000  
+
+
+Backtrace: 0x400e4e4e:0x3ffb9970 0x400dfa4b:0x3ffb99b0 0x400decb3:0x3ffb9aa0 0x400da981:0x3ffb9ad0
+
+
+
+
+ELF file SHA256: 16f429641
+
+Rebooting...
+ets Jul 29 2019 12:21:46
+
+rst:0xc (SW_CPU_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+I (11583) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (11583) boot: compile time Nov 16 2026 14:44:15
+I (11584) boot: Multicore bootloader
+I (11683) boot: chip revision: v0.0
+I (11683) boot.esp32: SPI Speed      : 40MHz
+I (11683) boot.esp32: SPI Mode       : DIO
+I (11684) boot.esp32: SPI Flash Size : 4MB
+I (11759) boot: Enabling RNG early entropy source...
+I (11769) boot: Partition Table:
+I (11769) boot: ## Label            Usage          Type ST Offset   Length
+I (11769) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+I (11770) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+I (11771) boot:  2 app0             OTA app          00 10 00010000 00140000
+I (11771) boot:  3 app1             OTA app          00 11 00150000 00140000
+I (11772) boot:  4 spiffs           Unknown data     01 82 00290000 00160000
+I (11772) boot:  5 coredump         Unknown data     01 03 003f0000 00010000
+I (11781) boot: End of partition table
+I (11970) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=167dch ( 92124) map
+I (12383) esp_image: segment 1: paddr=00026804 vaddr=3ffb0000 size=02998h ( 10648) load
+I (12483) esp_image: segment 2: paddr=000291a4 vaddr=40080000 size=06e74h ( 28276) load
+I (12583) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=3e91ch (256284) map

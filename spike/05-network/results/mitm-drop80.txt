@@ -1,0 +1,18 @@
+QEMU connected (4 chardevs)
+   7.502 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+   8.441 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  10.034 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  11.642 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  13.292 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  14.909 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  16.017 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  17.650 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  19.650 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  20.783 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  22.576 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  23.669 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  25.667 chip->net TCP 10.0.2.15:56822 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  29.746 chip->net TCP 10.0.2.15:56823 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  31.442 chip->net TCP 10.0.2.15:56823 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+  32.658 chip->net TCP 10.0.2.15:56823 -> 104.20.23.154:80 [S] 58B  ** DROPPED by app **
+SUMMARY chip->net=34 chip->net_bytes=2597 chip->net_dropped=16 net->chip=6 net->chip_bytes=1521

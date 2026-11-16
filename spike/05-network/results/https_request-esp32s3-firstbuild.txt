@@ -1,0 +1,13 @@
+I (3827) time_sync: Time not found in NVS. Syncing time from SNTP server.
+I (3837) time_sync: Initializing SNTP
+E (3847) esp_netif_sntp: sntp_init_api(48): Tried to configure more servers than enabled in lwip. Please update CONFIG_SNTP_MAX_SERVERS
+E (3867) esp_netif_sntp: esp_netif_sntp_init(119): Failed initialize SNTP service
+ESP_ERROR_CHECK failed: esp_err_t 0xffffffff (ESP_FAIL) at 0x4200c3ae
+I (8835) example: Connection established...
+HTTP/1.1 200 OK
+I (21305) example: Connection established...
+HTTP/1.1 200 OK
+I (34145) example: Connection established...
+HTTP/1.1 200 OK
+I (46535) example: Connection established...
+HTTP/1.1 200 OK

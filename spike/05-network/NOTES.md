@@ -145,6 +145,23 @@ Build outputs (`build-*/`) are git-ignored.
   - Min free heap: ESP32 ~222 KB, S3 ~302 KB.
 - **The community report of S3-only TLS failure under QEMU (esp-idf #15446, https://esp32.com/viewtopic.php?p=144562) did not reproduce** with ESP-IDF v5.5.5 + QEMU 9.2.2 (HTTPS GET; that report was MQTTS). A rebuild with the example's full config (certificate time check via SNTP over UDP) is queued.
 
+### Question 7: performance, inside the heavy-job lock [own test]
+`probe-session.ps1 -BenchArgs '-n 200 --upload-bytes 4194304'`, 2 runs per chip × mode, host ↔ chip via `hostfwd` on 127.0.0.1. Full log: `results/perf.txt`.
+**8/8 runs completed, no panics** (including 4 default-mode boots).
+
+| Chip / mode | Echo RTT, 32 B, n=200: median (p95, max) ms | Host→chip (sink) MB/s | Chip→host (source) MB/s | Boot→IP | GET example.com total |
+|---|---|---|---|---|---|
+| ESP32 default | 0.45 / 0.48 (0.97 / 0.66; max 2.1 / 8.3) | 4.87 / 4.38 | 3.27 / 3.08 | 2.0 s | 101 / 62 ms |
+| ESP32 icount | 0.59 / 0.59 (1.08 / 1.07) | 4.21 / 4.32 | 2.34 / 2.37 | 2.1 s | 142 / 191 ms |
+| S3 default | 0.53 / 0.54 (0.77 / 0.92) | 4.62 / 4.51 | 2.86 / 2.82 | 2.0 s | 59 / 71 ms |
+| S3 icount | 0.54 / 0.52 (1.25 / 1.43) | 4.84 / 4.87 | 2.83 / 2.75 | 2.1 s | 281 / 335 ms |
+
+- **Latency:** about 0.5 ms round trip host↔chip, with p95 ≤ 1.5 ms. That's far below anything a protocol timeout cares about.
+- **Throughput:** ≈ **35–39 Mbit/s into the chip, 19–26 Mbit/s out**. It matches the community anecdote of ~34 Mbit/s for `-nic user` on a Windows host (https://lists.nongnu.org/archive/html/qemu-discuss/2022-04/msg00012.html). That's the same order as a real ESP32's Wi-Fi TCP throughput (typically ~20–30 Mbit/s on hardware, from Espressif's iperf figures; not measured here). So it's **realistic, not a bottleneck**, for an ESP32 product.
+- **Chip→host is slower.** A likely cause (not verified) is ESP-IDF's openeth driver defaults: `CONFIG_ETH_OPENETH_DMA_TX_BUFFER_NUM=1`, RX=4. Window scaling (missing in slirp, per the community) doesn't matter at these rates on loopback.
+- `-icount shift=auto` costs little here (the chip is mostly idle waiting on I/O): RTT +0.1 ms, chip→host −25 % on ESP32, nothing measurable on S3.
+- "ms" in the chip's own `PROBE` lines is virtual time. Host-side numbers (`host_bench.py`) are wall-clock.
+
 ### Community cross-checks (rule 12)
 - [community] An esp32.com thread reports **TLS (MQTTS) failing under QEMU on ESP32-S3 only**, working on ESP32/ESP32-C3; filed as esp-idf issue #15446. Status unknown. https://esp32.com/viewtopic.php?p=144562 . **Relevant to the product: many sketches use HTTPS/MQTTS.** To test on S3 here (to do).
 - [community] slirp has **no TCP window scaling**, so at most 64 KiB is in flight; it's commonly described as the slowest QEMU networking mode (passt presentation, https://passt.top/everything_open_2023.pdf). One anecdotal report gives ~34 Mbit/s for a Windows host with `-nic user`: https://lists.nongnu.org/archive/html/qemu-discuss/2022-04/msg00012.html . To compare with our own measurement (question 7).

@@ -1,0 +1,152 @@
+##### esp32 default run 1
+chip ready after 4 s
+ECHO n=200 size=32B rtt_ms min=0.36 median=0.45 p95=0.97 max=2.05
+UPLOAD bytes=4194304 s=0.86 MBps=4.867
+DOWNLOAD bytes=4194304 s=1.28 MBps=3.267
+--- chip UART (PROBE lines)
+PROBE NET UP ip=10.0.2.15 gw=10.0.2.2 mask=255.255.255.0 dns=10.0.2.3 connect_ms=1993
+PROBE LISTEN 3333 OK
+PROBE LISTEN 3334 OK
+PROBE LISTEN 3335 OK
+PROBE GET example.com/ -> HTTP/1.1 200 OK | ip=172.66.147.243 bytes=891 dns_ms=51 connect_ms=23 total_ms=101
+PROBE GET 10.0.2.2/hello.txt -> HTTP/1.0 200 OK | ip=10.0.2.2 bytes=234 dns_ms=1 connect_ms=2 total_ms=34
+PROBE OUTBOUND DONE
+PROBE ACCEPT 3333 from 10.0.2.2:56355
+PROBE ECHO done bytes=6400 ms=125
+PROBE ACCEPT 3334 from 10.0.2.2:56356
+PROBE SINK done bytes=4194304 ms=882
+PROBE ACCEPT 3335 from 10.0.2.2:56357
+PROBE SOURCE done bytes=4194304 ms=1282
+##### esp32 default run 2
+chip ready after 4 s
+ECHO n=200 size=32B rtt_ms min=0.37 median=0.48 p95=0.66 max=8.30
+UPLOAD bytes=4194304 s=0.96 MBps=4.380
+DOWNLOAD bytes=4194304 s=1.36 MBps=3.079
+--- chip UART (PROBE lines)
+PROBE NET UP ip=10.0.2.15 gw=10.0.2.2 mask=255.255.255.0 dns=10.0.2.3 connect_ms=2001
+PROBE LISTEN 3333 OK
+PROBE LISTEN 3334 OK
+PROBE LISTEN 3335 OK
+PROBE GET example.com/ -> HTTP/1.1 200 OK | ip=104.20.23.154 bytes=891 dns_ms=9 connect_ms=23 total_ms=62
+PROBE GET 10.0.2.2/hello.txt -> HTTP/1.0 200 OK | ip=10.0.2.2 bytes=234 dns_ms=1 connect_ms=1 total_ms=33
+PROBE OUTBOUND DONE
+PROBE ACCEPT 3333 from 10.0.2.2:51782
+PROBE ECHO done bytes=6400 ms=108
+PROBE ACCEPT 3334 from 10.0.2.2:51783
+PROBE SINK done bytes=4194304 ms=955
+PROBE ACCEPT 3335 from 10.0.2.2:51786
+PROBE SOURCE done bytes=4194304 ms=1377
+##### esp32 icount run 1
+chip ready after 6 s
+ECHO n=200 size=32B rtt_ms min=0.41 median=0.59 p95=1.08 max=2.57
+UPLOAD bytes=4194304 s=1.00 MBps=4.213
+DOWNLOAD bytes=4194304 s=1.79 MBps=2.343
+--- chip UART (PROBE lines)
+PROBE NET UP ip=10.0.2.15 gw=10.0.2.2 mask=255.255.255.0 dns=10.0.2.3 connect_ms=2131
+PROBE LISTEN 3333 OK
+PROBE LISTEN 3334 OK
+PROBE LISTEN 3335 OK
+PROBE GET example.com/ -> HTTP/1.1 200 OK | ip=172.66.147.243 bytes=891 dns_ms=42 connect_ms=42 total_ms=142
+PROBE GET 10.0.2.2/hello.txt -> HTTP/1.0 200 OK | ip=10.0.2.2 bytes=234 dns_ms=2 connect_ms=13 total_ms=52
+PROBE OUTBOUND DONE
+PROBE ACCEPT 3333 from 10.0.2.2:57303
+PROBE ECHO done bytes=6400 ms=663
+PROBE ACCEPT 3334 from 10.0.2.2:57304
+PROBE SINK done bytes=4194304 ms=389
+PROBE ACCEPT 3335 from 10.0.2.2:57305
+PROBE SOURCE done bytes=4194304 ms=2130
+##### esp32 icount run 2
+chip ready after 6 s
+ECHO n=200 size=32B rtt_ms min=0.43 median=0.59 p95=1.07 max=6.08
+UPLOAD bytes=4194304 s=0.97 MBps=4.320
+DOWNLOAD bytes=4194304 s=1.77 MBps=2.365
+--- chip UART (PROBE lines)
+PROBE NET UP ip=10.0.2.15 gw=10.0.2.2 mask=255.255.255.0 dns=10.0.2.3 connect_ms=2120
+PROBE LISTEN 3333 OK
+PROBE LISTEN 3334 OK
+PROBE LISTEN 3335 OK
+PROBE GET example.com/ -> HTTP/1.1 200 OK | ip=104.20.23.154 bytes=891 dns_ms=92 connect_ms=41 total_ms=191
+PROBE GET 10.0.2.2/hello.txt -> HTTP/1.0 200 OK | ip=10.0.2.2 bytes=234 dns_ms=5 connect_ms=12 total_ms=61
+PROBE OUTBOUND DONE
+PROBE ACCEPT 3333 from 10.0.2.2:57310
+PROBE ECHO done bytes=6400 ms=647
+PROBE ACCEPT 3334 from 10.0.2.2:57311
+PROBE SINK done bytes=4194304 ms=398
+PROBE ACCEPT 3335 from 10.0.2.2:57312
+PROBE SOURCE done bytes=4194304 ms=2160
+##### esp32s3 default run 1
+chip ready after 3 s
+ECHO n=200 size=32B rtt_ms min=0.39 median=0.53 p95=0.77 max=4.77
+UPLOAD bytes=4194304 s=0.91 MBps=4.617
+DOWNLOAD bytes=4194304 s=1.47 MBps=2.859
+--- chip UART (PROBE lines)
+PROBE NET UP ip=10.0.2.15 gw=10.0.2.2 mask=255.255.255.0 dns=10.0.2.3 connect_ms=1995
+PROBE LISTEN 3333 OK
+PROBE LISTEN 3334 OK
+PROBE LISTEN 3335 OK
+PROBE GET example.com/ -> HTTP/1.1 200 OK | ip=172.66.147.243 bytes=891 dns_ms=10 connect_ms=19 total_ms=59
+PROBE GET 10.0.2.2/hello.txt -> HTTP/1.0 200 OK | ip=10.0.2.2 bytes=234 dns_ms=1 connect_ms=3 total_ms=36
+PROBE OUTBOUND DONE
+PROBE ACCEPT 3333 from 10.0.2.2:57315
+PROBE ECHO done bytes=6400 ms=116
+PROBE ACCEPT 3334 from 10.0.2.2:57316
+PROBE SINK done bytes=4194304 ms=905
+PROBE ACCEPT 3335 from 10.0.2.2:57317
+PROBE SOURCE done bytes=4194304 ms=1464
+##### esp32s3 default run 2
+chip ready after 3 s
+ECHO n=200 size=32B rtt_ms min=0.37 median=0.54 p95=0.92 max=7.15
+UPLOAD bytes=4194304 s=0.93 MBps=4.507
+DOWNLOAD bytes=4194304 s=1.49 MBps=2.815
+--- chip UART (PROBE lines)
+PROBE NET UP ip=10.0.2.15 gw=10.0.2.2 mask=255.255.255.0 dns=10.0.2.3 connect_ms=2002
+PROBE LISTEN 3333 OK
+PROBE LISTEN 3334 OK
+PROBE LISTEN 3335 OK
+PROBE GET example.com/ -> HTTP/1.1 200 OK | ip=104.20.23.154 bytes=891 dns_ms=12 connect_ms=27 total_ms=71
+PROBE GET 10.0.2.2/hello.txt -> HTTP/1.0 200 OK | ip=10.0.2.2 bytes=234 dns_ms=1 connect_ms=2 total_ms=31
+PROBE OUTBOUND DONE
+PROBE ACCEPT 3333 from 10.0.2.2:57320
+PROBE ECHO done bytes=6400 ms=119
+PROBE ACCEPT 3334 from 10.0.2.2:57321
+PROBE SINK done bytes=4194304 ms=953
+PROBE ACCEPT 3335 from 10.0.2.2:57322
+PROBE SOURCE done bytes=4194304 ms=1510
+##### esp32s3 icount run 1
+chip ready after 6 s
+ECHO n=200 size=32B rtt_ms min=0.36 median=0.54 p95=1.25 max=2.11
+UPLOAD bytes=4194304 s=0.87 MBps=4.841
+DOWNLOAD bytes=4194304 s=1.48 MBps=2.827
+--- chip UART (PROBE lines)
+PROBE NET UP ip=10.0.2.15 gw=10.0.2.2 mask=255.255.255.0 dns=10.0.2.3 connect_ms=2135
+PROBE LISTEN 3333 OK
+PROBE LISTEN 3334 OK
+PROBE LISTEN 3335 OK
+PROBE GET example.com/ -> HTTP/1.1 200 OK | ip=172.66.147.243 bytes=891 dns_ms=165 connect_ms=42 total_ms=281
+PROBE GET 10.0.2.2/hello.txt -> HTTP/1.0 200 OK | ip=10.0.2.2 bytes=234 dns_ms=1 connect_ms=14 total_ms=70
+PROBE OUTBOUND DONE
+PROBE ACCEPT 3333 from 10.0.2.2:57326
+PROBE ECHO done bytes=6400 ms=764
+PROBE ACCEPT 3334 from 10.0.2.2:57327
+PROBE SINK done bytes=4194304 ms=353
+PROBE ACCEPT 3335 from 10.0.2.2:57328
+PROBE SOURCE done bytes=4194304 ms=1588
+##### esp32s3 icount run 2
+chip ready after 6 s
+ECHO n=200 size=32B rtt_ms min=0.38 median=0.52 p95=1.43 max=3.54
+UPLOAD bytes=4194304 s=0.86 MBps=4.869
+DOWNLOAD bytes=4194304 s=1.53 MBps=2.747
+--- chip UART (PROBE lines)
+PROBE NET UP ip=10.0.2.15 gw=10.0.2.2 mask=255.255.255.0 dns=10.0.2.3 connect_ms=2129
+PROBE LISTEN 3333 OK
+PROBE LISTEN 3334 OK
+PROBE LISTEN 3335 OK
+PROBE GET example.com/ -> HTTP/1.1 200 OK | ip=104.20.23.154 bytes=891 dns_ms=183 connect_ms=61 total_ms=335
+PROBE GET 10.0.2.2/hello.txt -> HTTP/1.0 200 OK | ip=10.0.2.2 bytes=234 dns_ms=2 connect_ms=14 total_ms=62
+PROBE OUTBOUND DONE
+PROBE ACCEPT 3333 from 10.0.2.2:57336
+PROBE ECHO done bytes=6400 ms=941
+PROBE ACCEPT 3334 from 10.0.2.2:57337
+PROBE SINK done bytes=4194304 ms=317
+PROBE ACCEPT 3335 from 10.0.2.2:57338
+PROBE SOURCE done bytes=4194304 ms=1534
