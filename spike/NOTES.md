@@ -99,3 +99,47 @@ Rebuild after touching one `.cpp` (the everyday edit→run loop): **A 12.8 s, B 
 - **Keep path A as a reference build** to check that path B behaves the same as the Arduino IDE.
 
 Next: step 2 (Boot). Look closely at the full boot logs, the S3 clock, and which peripherals' init paths break.
+
+## 2026-11-16 — Step 2: Boot (interim; the final write-up follows)
+
+Setup: `02-boot/probe/probe.ino` tests 19 Arduino API areas. `02-boot/probe-run.ps1` drives it through QEMU's UART0 over TCP (UART1 goes to a file). It retries a test once after a chip crash and records CRASH/HANG. Results are in `02-boot/results/`.
+
+### Spurious "Cache disabled but cached memory region accessed" panics (key risk)
+- The chip panics at random: during `nvs_flash_init()` at boot (Arduino's `initArduino`), or even with both cores idle in `waiti`. The panicking core prints as `/` (core −1: unknown).
+- This happens **on an idle host too**. Load makes it more frequent: under a 16-core build, the step 1 sketch failed 1 of 2 boots.
+- Boot-reliability A/B test: step 1 sketch, path A, ESP32 `-Og`, 15 boots × 15 s per mode, idle host:
+
+| QEMU mode | Boots that never reached `setup()` output | Cache panics | Speed (ticks/15 s; real time ≈ 23) |
+|---|---|---|---|
+| default | **4/15** | 5 | ~23 |
+| `-icount shift=auto` | **0/15** | 0 | ~6–7 (**~3.5× slower than real time**) |
+| `-icount shift=2` | 15/15 (too slow to finish booting) | 0 | 0 |
+| `-accel tcg,thread=single` | 15/15 (stuck after the ROM banner) | 0 | 0 |
+
+- **Interpretation:** it looks like a race between QEMU's two vCPU threads around ESP-IDF's cross-core cache-disable handshake. Deterministic instruction counting removes it. Single-threaded TCG doesn't run this machine at all.
+- **Product impact:** default mode is fast but fails ~1 boot in 4; `-icount` is stable but too slow for real-time I/O with real devices.
+- **Open, to investigate:**
+  - a unicore firmware build (`CONFIG_FREERTOS_UNICORE`, path B only; it changes fidelity);
+  - other `-icount` options (`sleep=off`, `align`);
+  - Espressif's QEMU issue tracker.
+  - A QEMU-side fix would be QEMU-zone (GPLv2) work.
+
+### Probe results so far: path A, ESP32 `-Og`, idle host, default mode
+- **OK:** chip info, `setCpuFrequencyMhz` 80/160/240, dual-core task pinning, hardware timer (9 alarms/s; 10 expected, boundary effect), UART1 (the host received the text), `esp_random`, NVS read/write, LittleFS format + read/write.
+- **Timing:** `delay(2000)` = 2000 ms, `micros` 2,000,103, 240.0 cycles/µs. In default mode the virtual clock follows host time.
+- **FAIL (not emulated):**
+  - GPIO input/readback: everything reads 0, including the pull-up.
+  - GPIO interrupts: 0 of 10.
+  - LEDC readback: duty and frequency read 0.
+  - I2C: the bus isn't empty. Address **0x48 ACKs**, so QEMU has a built-in I2C device there (likely a TMP105-class sensor; to confirm).
+- **RAN, values not real:**
+  - SPI echoes the sent byte (0xA5).
+  - `touchRead`=0 after a 2 s "measurement done timeout".
+  - `temperatureRead`=−17.8 °C.
+  - ADC: see below.
+- **CRASH (both attempts, deterministic):**
+  - **ADC** (`analogRead`): "Cache error" panic in `adc_oneshot_hal_convert` reading the ADC register.
+  - **RMT**: the same panic in `rmt_tx_disable` reading the interrupt-status register.
+  - **Wi-Fi** (`WiFi.mode(WIFI_STA)`): `assert failed: esp_phy_enable phy_init.c:336`.
+- **Expected log noise:** the LittleFS "Corrupted dir pair / mount failed (-84)" appears on first mount of a blank partition, then the format succeeds (the same happens on real hardware).
+- Remaining: probe path A ESP32-S3 and path B ESP32/S3; check whether the `cpufreq` test destabilizes the next test; summarize per peripheral.
