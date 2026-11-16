@@ -42,3 +42,16 @@ The repo lives at `D:\MBA\Term 5\AABI\Project\Claude CLI\Development`, and that 
 **Product implication:** users will have spaces in their paths too (e.g. `C:\Users\John Smith\...`). The app must handle this itself, e.g. by staging builds in a space-free work directory.
 
 Disk space: C: 138 GB free, D: 185 GB free. The toolchains need roughly 4–6 GB in total.
+
+**Resolved (2026-11-16):** the whole project moved to `D:\Coding\Code_Visualizer\Claude_CLI\Development`, which has no spaces (option 1). The product implication above still stands.
+
+## 2026-11-16 — Toolchain check after the move
+
+All verified:
+- ESP-IDF v5.5.5 via EIM 0.21.1 (`C:\Espressif\v5.5.5\esp-idf`); `idf.py --version` → v5.5.5.
+- Arduino-ESP32 core 3.3.12 in arduino-cli 1.6.0.
+- Espressif QEMU 9.2.2 (`esp_develop_9.2.2_20260417`), xtensa + riscv32.
+
+**Quirk:** QEMU installed into `C:\Espressif\tools\tools\` (doubled), because `idf_tools.py` uses `%IDF_TOOLS_PATH%\tools` while EIM puts its tools directly in `C:\Espressif\tools`. It isn't on the PATH that `eim shell` exports. Spike scripts call it by absolute path.
+
+**Product implication:** the app shouldn't rely on PATH to find emulators or toolchains. It should keep an explicit, configurable path per tool and version.
