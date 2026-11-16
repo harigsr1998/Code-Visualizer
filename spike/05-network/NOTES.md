@@ -12,8 +12,8 @@ Legend for sources (RULES.md rule 12): **[own test]** = measured here; **[offici
 | `idf_http_request/`, `idf_tcp_server/` | Unmodified copies of ESP-IDF v5.5.5 `examples/protocols/http_request` and `examples/protocols/sockets/tcp_server` | Example C code: "Public Domain (or CC0 licensed, at your option)" (file headers). Their `pytest_*.py` files: `SPDX-License-Identifier: Apache-2.0`. Both fine for every zone. |
 | `sdkconfig.qemu_eth` | open_eth settings for the IDF examples (same as Espressif's own QEMU CI configs) | config |
 | `net_probe/` | Our firmware: outbound HTTP (internet + host), TCP echo/sink/source servers | **firmware zone**: permissive (MIT/Apache-2.0), to be decided |
-| `arduino_net/` | Path B Arduino sketch + `qemu_eth.{h,cpp}` (an Arduino `NetworkInterface` for open_eth) | **firmware zone**: permissive, to be decided |
-| `arduino_eth_stock/` | Negative control: unmodified `ETH.begin()` | firmware zone |
+| `an/` ("arduino net"; short name because of the path limit, see below) | Path B Arduino sketch + `qemu_eth.{h,cpp}` (an Arduino `NetworkInterface` for open_eth) | **firmware zone**: permissive, to be decided |
+| `es/` ("ETH stock") | Negative control: unmodified `ETH.begin()` | firmware zone |
 | `sdkconfig.arduino_openeth` | `CONFIG_ETH_USE_OPENETH=y` for path B | config |
 | `build-idf.ps1`, `run-net.ps1` | Build plain IDF projects; boot an image in QEMU with networking | **app zone** |
 | `frame_tap.py` | Frame capture / man-in-the-middle relay (Python stdlib only) | **app zone** (a separate process talking to QEMU over sockets, *not* a QEMU plugin) |
@@ -73,8 +73,42 @@ Build outputs (`build-*/`) are git-ignored.
 
 ### Question 5, path B: the Arduino `ETH` class [official: source of arduino-esp32 3.3.12]
 - `ETHClass::begin()` (`libraries/Ethernet/src/ETH.cpp` ~233–430) only creates `esp_eth_mac_new_esp32` (internal EMAC) or SPI MACs (W5500/DM9051/KSZ8851). There's no openeth branch, so `ETH.begin()` **can't** drive QEMU's NIC unchanged.
-- But `NetworkInterface` (`libraries/Network/src/NetworkInterface.h`) exposes `initNetif()`, `setStatusBits()` and `Network.postEvent()` to subclasses. `arduino_net/qemu_eth.cpp` copies ETHClass's sequence with `esp_eth_mac_new_openeth` + `esp_eth_phy_new_dp83848` (as in ESP-IDF's `protocol_examples_common/eth_connect.c`) and registers as `ESP_NETIF_ID_ETH0`.
+- But `NetworkInterface` (`libraries/Network/src/NetworkInterface.h`) exposes `initNetif()`, `setStatusBits()` and `Network.postEvent()` to subclasses. `an/qemu_eth.cpp` copies ETHClass's sequence with `esp_eth_mac_new_openeth` + `esp_eth_phy_new_dp83848` (as in ESP-IDF's `protocol_examples_common/eth_connect.c`) and registers as `ESP_NETIF_ID_ETH0`.
 - Test pending (build queued).
+
+### Windows path limit broke the first path B builds [own test + community]
+- **All 3 path B builds failed** (after 214–273 s) with `fatal error: opening dependency file …\1f28b54047efcf5aae11dbab225dc5cb\MatterTemperatureControlledCabinet.cpp.obj.d: No such file or directory`.
+- That path is **261 characters**, over Windows' 260 MAX_PATH, and `LongPathsEnabled=0` on this machine. The coordinator's step 1 builds worked because `Development\spike\build-b-esp32-os\…` gives 228. CMake already hashes long object dirs; the worst case is still `MatterTemperatureControlledCabinet.cpp`, which arduino-esp32 compiles whatever the sketch uses.
+- **Workaround here:** renamed the sketch folders to `an/` and `es/` and dropped `-BuildTag`, which cuts 13 characters (worst path ≈ 248–250).
+- [community] The same `.obj.d` symptom is traced to MAX_PATH at https://flowcode.co.uk/forums/viewtopic.php?p=14990 . An esp32.com thread reports **ccache failing on long paths even with Windows long paths enabled**: https://esp32.com/viewtopic.php?p=56693 (unverified here). Also see https://esp32.com/viewtopic.php?p=124271 (CMAKE_OBJECT_PATH_MAX).
+- **Product implication:** user projects can live in deep folders, and the user name is part of the path. The app must build in its own **short staging directory** (e.g. `C:\cvb\<hash>` or under a short `%LOCALAPPDATA%` root) and not depend on `LongPathsEnabled`, which needs admin and reportedly doesn't fix ccache anyway. This adds to the spaces-in-path finding from step 0.
+- **Request to the coordinator:** add an `-OutDir` option to `01-build/build.ps1`, so the build folder doesn't have to sit next to the sketch.
+
+### Question 1, ESP32-S3 [own test]
+- `idf_http_request` for S3: 123 s build. **2 of 2 boots** (`-icount shift=auto`, 40 s each): link up, DHCP 10.0.2.15, DNS, `HTTP/1.1 200 OK`, repeated. S3 works the same as ESP32.
+
+### Questions 2 + 3: net_probe and tcp_server via hostfwd (functional, `-icount`, not inside the lock) [own test]
+`probe-session.ps1` starts `python -m http.server 18071 --bind 127.0.0.1`, boots `net_probe` with `hostfwd=tcp:127.0.0.1:18070-:3333,…18072-:3334,…18073-:3335`, then runs `host_bench.py`.
+
+| | ESP32 | ESP32-S3 |
+|---|---|---|
+| DHCP → IP | 10.0.2.15 / gw 10.0.2.2 / DNS 10.0.2.3, 2.1 s after `example_connect()` | same, 2.1 s |
+| GET http://example.com/ (internet) | `HTTP/1.1 200 OK`, 889 B, DNS 88 ms | `HTTP/1.1 200 OK`, 892 B, DNS 63 ms |
+| GET http://10.0.2.2:18071/hello.txt (server on the host's 127.0.0.1) | `HTTP/1.0 200 OK` | `HTTP/1.0 200 OK` |
+| Inbound echo / sink / source via hostfwd | all accepted | all accepted |
+| Unmodified `idf_tcp_server` via `hostfwd=tcp:127.0.0.1:18075-:3333` | echoed "hello from host" | echoed "hello from host" |
+
+- **Fidelity gap:** every inbound connection reaches the chip **from 10.0.2.2** (slirp's NAT), not from the real client's address. Firmware that logs, rate-limits or allow-lists by client IP will see the wrong address. The MITM path (question 6) could fix this later by doing the NAT ourselves.
+- The host is `10.0.2.2` inside the chip, so a host service bound to 127.0.0.1 is reachable from the firmware. That's good for local test brokers/servers (e.g. a local MQTT broker), but the firmware has to use `10.0.2.2` instead of `localhost` or the host's LAN IP. The product could offer a "host alias" setting.
+
+### User decision (2026-11-16): inbound = local network only
+- The user will accept the Windows Firewall prompt for QEMU, and says future users can too.
+- **Inbound access from the internet is out of scope for now. v1 targets the LAN only.**
+- Consequences I pointed out to the user:
+  - Tick only "Private".
+  - The rule is per-exe (all ports of `qemu-system-xtensa.exe`) and per path, so a new QEMU version prompts again.
+  - "Cancel" silently creates a block rule.
+  - The app should bind `0.0.0.0` only for ports the user explicitly exposes.
 
 ### Community cross-checks (rule 12)
 - [community] An esp32.com thread reports **TLS (MQTTS) failing under QEMU on ESP32-S3 only**, working on ESP32/ESP32-C3; filed as esp-idf issue #15446. Status unknown. https://esp32.com/viewtopic.php?p=144562 . **Relevant to the product: many sketches use HTTPS/MQTTS.** To test on S3 here (to do).
