@@ -68,7 +68,13 @@ class TraceStats:
         seen_addr = set()
         line_hits: dict[str, Counter] = defaultdict(Counter)
         func_by_cpu: dict[int, Counter] = defaultdict(Counter)
+        top_funcs: Counter = Counter()
+        sym_cache: dict[int, str] = {}
         for (cpu, a), n in self.insn_exec.items():
+            s = sym_cache.get(a)
+            if s is None:
+                s = sym_cache[a] = lm.symbol(a) or f"?{a:08x}"
+            top_funcs[f"cpu{cpu} {s}"] += n
             c = cat_cache.get(a)
             if c is None:
                 c = cat_cache[a] = lm.category(a)
@@ -95,6 +101,7 @@ class TraceStats:
             "unique_executed_addrs_by_category": dict(uniq_cat.most_common()),
             "sketch_line_hits": {k: v.most_common(top) for k, v in sorted(line_hits.items())},
             "sketch_functions_by_cpu": {cpu: v.most_common(top) for cpu, v in sorted(func_by_cpu.items())},
+            "top_functions": [(k, round(v / total, 4)) for k, v in top_funcs.most_common(top)],
         }
 
 

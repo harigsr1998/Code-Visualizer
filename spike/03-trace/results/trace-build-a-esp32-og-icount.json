@@ -1,0 +1,128 @@
+{
+ "tb_executions": 1260243,
+ "tb_without_in_asm": 0,
+ "translated_tbs": 10549,
+ "insn_executions": 2327994,
+ "share_by_category": {
+  "idf": 0.95596,
+  "rom": 0.04176,
+  "toolchain": 0.00198,
+  "arduino": 0.0002,
+  "sketch": 0.0001
+ },
+ "share_by_cpu": {
+  "0": {
+   "idf": 0.95656,
+   "rom": 0.04344
+  },
+  "1": {
+   "idf": 0.95435,
+   "rom": 0.03722,
+   "toolchain": 0.00732,
+   "arduino": 0.00073,
+   "sketch": 0.00037
+  }
+ },
+ "insn_executions_by_cpu": {
+  "0": 1697683,
+  "1": 630311
+ },
+ "unique_executed_addrs_by_category": {
+  "idf": 1713,
+  "toolchain": 410,
+  "arduino": 100,
+  "sketch": 41,
+  "rom": 10
+ },
+ "sketch_line_hits": {
+  "cpu1": [
+   [
+    "fib.cpp:5",
+    40
+   ],
+   [
+    "counter.cpp:3",
+    37
+   ],
+   [
+    "sketch_multi.ino:35",
+    28
+   ],
+   [
+    "sketch_multi.ino:36",
+    24
+   ],
+   [
+    "fib.cpp:6",
+    20
+   ],
+   [
+    "fib.cpp:7",
+    16
+   ],
+   [
+    "sketch_multi.ino:34",
+    12
+   ],
+   [
+    "sketch_multi.ino:39",
+    8
+   ],
+   [
+    "sketch_multi.ino:37",
+    8
+   ],
+   [
+    "fib.cpp:3",
+    8
+   ],
+   [
+    "fib.cpp:4",
+    8
+   ],
+   [
+    "fib.cpp:8",
+    8
+   ],
+   [
+    "sketch_multi.ino:38",
+    8
+   ],
+   [
+    "fib.cpp:11",
+    6
+   ],
+   [
+    "sketch_multi.ino:33",
+    4
+   ]
+  ]
+ },
+ "sketch_functions_by_cpu": {
+  "1": [
+   [
+    "fib(unsigned long)",
+    106
+   ],
+   [
+    "loop()",
+    92
+   ],
+   [
+    "Counter::next()",
+    37
+   ]
+  ]
+ },
+ "tag": "build-a-esp32-og-icount",
+ "trace_on_s": 5.0,
+ "log_MB": 98.6,
+ "analyse_s": 1.32,
+ "uart_lines_during_trace": 4,
+ "uart_sample": [
+  "[spike] tick 3 fib(3)=2",
+  "[spike] tick 4 fib(4)=3",
+  "[spike] tick 5 fib(5)=5"
+ ],
+ "panics": []
+}

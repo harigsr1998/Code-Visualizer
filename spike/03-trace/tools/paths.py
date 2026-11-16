@@ -1,5 +1,6 @@
 """Machine-specific tool paths for the spike (app zone; stdlib only)."""
 
+import os
 from pathlib import Path
 
 QEMU = Path(r"C:\Espressif\tools\tools\qemu-xtensa\esp_develop_9.2.2_20260417\qemu\bin\qemu-system-xtensa.exe")
@@ -14,10 +15,13 @@ HERE = Path(__file__).resolve().parent
 STEP = HERE.parent  # spike/03-trace
 SPIKE = STEP.parent  # spike/
 
-# Ports reserved for the trace worker: 5560-5569.
-PORT_UART = 5560
-PORT_GDB = 5561
-PORT_MON = 5562
+# Ports reserved for the trace worker: 5560-5569. TRACE_PORT_BASE lets two of
+# our own runs coexist (e.g. a benchmark on 5560-5562, a functional run on 5564-5566).
+_BASE = int(os.environ.get("TRACE_PORT_BASE", "5560"))
+assert 5560 <= _BASE <= 5567, "trace worker ports are 5560-5569"
+PORT_UART = _BASE
+PORT_GDB = _BASE + 1
+PORT_MON = _BASE + 2
 
 
 def tool(chip: str, name: str) -> Path:
